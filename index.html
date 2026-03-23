@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wholeness — Life Tracker | Team21 Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --surface2: #1a1e2a;
+    --border: #252a38;
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --accent-spirit: #c084fc;
+    --accent-family: #f472b6;
+    --accent-finance: #34d399;
+    --accent-physical: #60a5fa;
+    --accent-edu: #fbbf24;
+    --accent-pro: #f97316;
+    --accent-social: #e879f9;
+    --gold: #d4a853;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* SPLASH / ONBOARDING */
+  #splash {
+    position: fixed; inset: 0; z-index: 1000;
+    background: var(--bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 24px; padding: 24px; text-align: center;
+  }
+  .splash-logo { font-family: 'Playfair Display', serif; font-size: 52px; color: var(--gold); letter-spacing: -1px; }
+  .splash-sub { font-size: 15px; color: var(--muted); max-width: 320px; line-height: 1.6; }
+  .splash-form { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 340px; margin-top: 8px; }
+  .splash-form input, .splash-form select {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 14px 16px;
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px;
+    outline: none; transition: border-color .2s;
+  }
+  .splash-form input:focus, .splash-form select:focus { border-color: var(--gold); }
+  .splash-form select option { background: #1a1e2a; }
+  .btn-primary {
+    background: var(--gold); color: #0d0f14; font-weight: 600; font-size: 15px;
+    border: none; border-radius: var(--radius-sm); padding: 14px 24px;
+    cursor: pointer; transition: opacity .2s; font-family: 'DM Sans', sans-serif;
+  }
+  .btn-primary:hover { opacity: .85; }
+  .orb {
+    position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; opacity: .18;
+  }
+  .orb1 { width: 400px; height: 400px; background: var(--accent-spirit); top: -100px; left: -100px; }
+  .orb2 { width: 350px; height: 350px; background: var(--accent-finance); bottom: -80px; right: -80px; }
+
+  /* MAIN APP */
+  #app { display: none; }
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,15,20,.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px; display: flex; align-items: center; gap: 16px; height: 60px;
+  }
+  .header-logo { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold); flex: 1; }
+  .header-user { font-size: 13px; color: var(--muted); }
+  .header-date { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
+
+  /* NAV */
+  nav {
+    display: flex; overflow-x: auto; gap: 6px; padding: 12px 16px;
+    border-bottom: 1px solid var(--border); scrollbar-width: none;
+    background: var(--surface);
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 8px 14px; border-radius: var(--radius-sm);
+    border: 1px solid transparent; background: none;
+    color: var(--muted); cursor: pointer; transition: all .2s;
+    white-space: nowrap; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
+    min-width: 68px;
+  }
+  .nav-btn .icon { font-size: 20px; }
+  .nav-btn.active { background: var(--surface2); border-color: var(--border); color: var(--text); }
+  .nav-btn.active .icon { filter: drop-shadow(0 0 6px currentColor); }
+
+  /* SECTIONS */
+  .section { display: none; padding: 20px 16px 100px; max-width: 700px; margin: 0 auto; }
+  .section.active { display: block; }
+  .section-title {
+    font-family: 'Playfair Display', serif; font-size: 26px;
+    margin-bottom: 4px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-desc { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+
+  /* CARDS */
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px; margin-bottom: 14px;
+  }
+  .card-title { font-weight: 600; font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .card-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 500; letter-spacing: .3px; }
+
+  /* INPUTS */
+  input[type=text], input[type=number], textarea, select.field {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 14px;
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+    outline: none; transition: border-color .2s; width: 100%;
+  }
+  input:focus, textarea:focus, select.field:focus { border-color: var(--gold); }
+  textarea { resize: vertical; min-height: 70px; }
+  select.field option { background: #1a1e2a; }
+
+  /* CHECKBOXES / HABITS */
+  .habit-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .habit-item:last-child { border-bottom: none; }
+  .habit-check {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid var(--border); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all .2s; background: none;
+  }
+  .habit-check.done { background: var(--gold); border-color: var(--gold); }
+  .habit-check.done::after { content: '✓'; color: #0d0f14; font-size: 12px; font-weight: 700; }
+  .habit-label { font-size: 14px; flex: 1; }
+  .habit-time { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
+
+  /* TIME OF DAY SECTIONS */
+  .tod-badge {
+    display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 20px;
+    background: var(--surface2); border: 1px solid var(--border); margin-bottom: 10px;
+  }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 480px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* BUTTONS */
+  .btn {
+    padding: 10px 18px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+    background: var(--surface2); color: var(--text); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-accent {
+    background: var(--gold); color: #0d0f14; border-color: var(--gold);
+    font-weight: 600;
+  }
+  .btn-accent:hover { opacity: .85; color: #0d0f14; }
+  .btn-small { padding: 6px 12px; font-size: 12px; }
+  .btn-danger { border-color: #ef4444; color: #ef4444; }
+  .btn-danger:hover { background: #ef444420; }
+
+  /* LOG ENTRIES */
+  .log-entry {
+    background: var(--surface2); border-radius: var(--radius-sm);
+    padding: 10px 14px; margin-bottom: 8px;
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+    font-size: 13px;
+  }
+  .log-amount { font-family: 'DM Mono', monospace; font-weight: 500; white-space: nowrap; }
+  .log-desc { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .log-date { font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+  /* PROGRESS */
+  .progress-bar { height: 6px; background: var(--surface2); border-radius: 99px; overflow: hidden; margin-top: 8px; }
+  .progress-fill { height: 100%; border-radius: 99px; transition: width .5s; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* TAGS */
+  .tag {
+    display: inline-block; font-size: 11px; padding: 2px 8px;
+    border-radius: 20px; background: var(--surface2); border: 1px solid var(--border);
+    color: var(--muted); margin: 2px;
+  }
+
+  /* REPORT */
+  #report-output {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px; margin-top: 16px;
+    line-height: 1.7; font-size: 14px;
+    white-space: pre-wrap;
+  }
+  .report-loading { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 14px; }
+  .spinner {
+    width: 18px; height: 18px; border: 2px solid var(--border);
+    border-top-color: var(--gold); border-radius: 50%;
+    animation: spin .7s linear infinite; flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* FAMILY MEMBERS */
+  .family-member {
+    background: var(--surface2); border-radius: var(--radius-sm);
+    padding: 14px; margin-bottom: 10px;
+  }
+  .family-member-name { font-weight: 600; font-size: 15px; margin-bottom: 8px; }
+  .action-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+
+  /* PHYSICAL SLIDERS / COUNTERS */
+  .counter-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+  }
+  .counter-label { flex: 1; font-size: 13px; }
+  .counter-ctrl { display: flex; align-items: center; gap: 8px; }
+  .counter-btn {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 1px solid var(--border); background: var(--surface2);
+    color: var(--text); font-size: 16px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color .2s;
+  }
+  .counter-btn:hover { border-color: var(--gold); }
+  .counter-val { font-family: 'DM Mono', monospace; font-size: 14px; min-width: 28px; text-align: center; }
+
+  input[type=range] {
+    -webkit-appearance: none; appearance: none;
+    height: 4px; background: var(--surface2); border-radius: 99px;
+    outline: none; width: 100%; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px;
+    border-radius: 50%; background: var(--gold); cursor: pointer;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 20px; font-size: 13px;
+    z-index: 999; opacity: 0; transition: opacity .3s; pointer-events: none;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; }
+
+  /* COLOR DOMAIN */
+  [data-domain=spirit] .section-title, [data-domain=spirit] .card-title span { color: var(--accent-spirit); }
+  [data-domain=family] .section-title, [data-domain=family] .card-title span { color: var(--accent-family); }
+  [data-domain=finance] .section-title, [data-domain=finance] .card-title span { color: var(--accent-finance); }
+  [data-domain=physical] .section-title, [data-domain=physical] .card-title span { color: var(--accent-physical); }
+  [data-domain=edu] .section-title, [data-domain=edu] .card-title span { color: var(--accent-edu); }
+  [data-domain=pro] .section-title, [data-domain=pro] .card-title span { color: var(--accent-pro); }
+  [data-domain=social] .section-title, [data-domain=social] .card-title span { color: var(--accent-social); }
+
+  .mt-8 { margin-top: 8px; }
+  .mt-12 { margin-top: 12px; }
+  .mt-16 { margin-top: 16px; }
+  .flex { display: flex; }
+  .flex-col { flex-direction: column; }
+  .gap-8 { gap: 8px; }
+  .gap-12 { gap: 12px; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+  .w-full { width: 100%; }
+  hr.div { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="splash-logo">Wholeness</div>
+  <p style="font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);opacity:.75;margin-top:-14px">Team21 Academy</p>
+  <p class="splash-desc" style="font-family:'Playfair Display',serif;font-style:italic;color:var(--muted);font-size:16px;">"A life well-tracked is a life well-lived"</p>
+  <div class="splash-form">
+    <input type="text" id="user-name" placeholder="Your name" />
+    <select id="user-country">
+      <option value="">Select your country (currency)</option>
+      <option value="NG|₦|NGN">Nigeria — ₦ Naira</option>
+      <option value="CM|FCFA|XAF">Cameroon — FCFA</option>
+      <option value="GH|₵|GHS">Ghana — ₵ Cedi</option>
+      <option value="KE|KSh|KES">Kenya — KSh Shilling</option>
+      <option value="ZA|R|ZAR">South Africa — R Rand</option>
+      <option value="US|$|USD">USA — $ Dollar</option>
+      <option value="GB|£|GBP">UK — £ Pound</option>
+      <option value="EU|€|EUR">Europe — € Euro</option>
+      <option value="CA|CA$|CAD">Canada — CA$ Dollar</option>
+      <option value="AU|A$|AUD">Australia — A$ Dollar</option>
+      <option value="IN|₹|INR">India — ₹ Rupee</option>
+      <option value="BR|R$|BRL">Brazil — R$ Real</option>
+      <option value="Other|$|USD">Other — $ USD</option>
+    </select>
+    <button class="btn-primary" onclick="startApp()">Begin My Journey →</button>
+    <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:4px">© Innocent Forteh · Team21 Academy</p>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <header>
+    <div style="flex:1">
+      <div class="header-logo">Wholeness</div>
+      <div style="font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold);opacity:.65;margin-top:-2px">Team21 Academy</div>
+    </div>
+    <div style="text-align:right">
+      <div class="header-user" id="hdr-name"></div>
+      <div class="header-date" id="hdr-date"></div>
+    </div>
+  </header>
+
+  <nav id="main-nav">
+    <button class="nav-btn active" onclick="showSection('spirit')" data-s="spirit"><span class="icon">🕊️</span>Spirit</button>
+    <button class="nav-btn" onclick="showSection('family')" data-s="family"><span class="icon">❤️</span>Family</button>
+    <button class="nav-btn" onclick="showSection('finance')" data-s="finance"><span class="icon">💰</span>Finance</button>
+    <button class="nav-btn" onclick="showSection('physical')" data-s="physical"><span class="icon">💪</span>Physical</button>
+    <button class="nav-btn" onclick="showSection('edu')" data-s="edu"><span class="icon">📚</span>Education</button>
+    <button class="nav-btn" onclick="showSection('pro')" data-s="pro"><span class="icon">🚀</span>Career</button>
+    <button class="nav-btn" onclick="showSection('social')" data-s="social"><span class="icon">🌍</span>Social</button>
+  </nav>
+
+  <!-- ===== SPIRITUAL ===== -->
+  <div class="section active" id="sec-spirit" data-domain="spirit">
+    <div class="section-title">🕊️ Spiritual Life</div>
+    <p class="section-desc">Nurture your intimacy with God — morning, midday, and night.</p>
+
+    <div class="card">
+      <div class="tod-badge" style="color:var(--accent-spirit);border-color:var(--accent-spirit)30">🌅 Morning Routine</div>
+      <div id="morning-habits"></div>
+    </div>
+
+    <div class="card">
+      <div class="tod-badge" style="color:var(--gold);border-color:var(--gold)30">☀️ Midday Pause</div>
+      <div id="midday-habits"></div>
+    </div>
+
+    <div class="card">
+      <div class="tod-badge" style="color:var(--accent-physical);border-color:var(--accent-physical)30">🌙 Night Watch</div>
+      <div id="night-habits"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>📓</span> Today's Journal</div>
+      <div class="card-label">Reflection, gratitude, prayers answered</div>
+      <textarea id="journal-text" placeholder="Write your heart here..." style="min-height:120px"></textarea>
+      <button class="btn btn-accent mt-12" onclick="saveJournal()">Save Journal Entry</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>📅</span> This Week's Streak</div>
+      <div id="spirit-streak"></div>
+    </div>
+  </div>
+
+  <!-- ===== FAMILY ===== -->
+  <div class="section" id="sec-family" data-domain="family">
+    <div class="section-title">❤️ Family</div>
+    <p class="section-desc">Intentional relationships. Add family members and track connection actions.</p>
+
+    <div class="card">
+      <div class="card-title"><span>➕</span> Add Family Member</div>
+      <div class="grid-2">
+        <div>
+          <div class="card-label">Name</div>
+          <input type="text" id="fm-name" placeholder="e.g. Mum, Brother John" />
+        </div>
+        <div>
+          <div class="card-label">Relationship</div>
+          <input type="text" id="fm-rel" placeholder="e.g. Mother, Sibling" />
+        </div>
+      </div>
+      <button class="btn btn-accent mt-12" onclick="addFamilyMember()">Add Member</button>
+    </div>
+
+    <div id="family-list"></div>
+  </div>
+
+  <!-- ===== FINANCE ===== -->
+  <div class="section" id="sec-finance" data-domain="finance">
+    <div class="section-title">💰 Finance</div>
+    <p class="section-desc">Set monthly goals, log daily transactions, and get smart suggestions.</p>
+
+    <!-- Monthly Goals -->
+    <div class="card">
+      <div class="card-title"><span>🎯</span> Monthly Goals — <span id="fin-month-label" style="color:var(--muted);font-weight:400;font-size:13px"></span></div>
+      <div class="grid-2">
+        <div>
+          <div class="card-label">Spending Limit</div>
+          <input type="number" id="goal-spend" placeholder="0" />
+        </div>
+        <div>
+          <div class="card-label">Savings Goal</div>
+          <input type="number" id="goal-save" placeholder="0" />
+        </div>
+        <div>
+          <div class="card-label">Investment Goal</div>
+          <input type="number" id="goal-invest" placeholder="0" />
+        </div>
+        <div>
+          <div class="card-label">Giving Goal</div>
+          <input type="number" id="goal-give" placeholder="0" />
+        </div>
+      </div>
+      <button class="btn btn-accent mt-12" onclick="saveGoals()">Save Goals</button>
+    </div>
+
+    <!-- Goals Progress -->
+    <div class="card" id="goals-progress-card" style="display:none">
+      <div class="card-title"><span>📊</span> Month Progress</div>
+      <div id="goals-progress"></div>
+    </div>
+
+    <!-- Log Income -->
+    <div class="card">
+      <div class="card-title"><span>📈</span> Log Income</div>
+      <div class="grid-2">
+        <div>
+          <div class="card-label">Amount (<span class="cur-sym"></span>)</div>
+          <input type="number" id="inc-amount" placeholder="0" />
+        </div>
+        <div>
+          <div class="card-label">Source / Description</div>
+          <input type="text" id="inc-desc" placeholder="Salary, Freelance..." />
+        </div>
+      </div>
+      <button class="btn btn-accent mt-12" onclick="logIncome()">+ Log Income</button>
+    </div>
+
+    <!-- Log Expense -->
+    <div class="card">
+      <div class="card-title"><span>📉</span> Log Expense</div>
+      <div class="grid-2">
+        <div>
+          <div class="card-label">Amount (<span class="cur-sym"></span>)</div>
+          <input type="number" id="exp-amount" placeholder="0" />
+        </div>
+        <div>
+          <div class="card-label">Category</div>
+          <select class="field" id="exp-cat">
+            <option>Food & Dining</option><option>Transport</option><option>Housing</option>
+            <option>Healthcare</option><option>Clothing</option><option>Entertainment</option>
+            <option>Education</option><option>Giving / Tithe</option><option>Investment</option>
+            <option>Savings</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-label mt-8">Description</div>
+      <input type="text" id="exp-desc" placeholder="What did you spend on?" />
+      <button class="btn btn-accent mt-12" onclick="logExpense()">+ Log Expense</button>
+    </div>
+
+    <!-- Transactions -->
+    <div class="card">
+      <div class="card-title"><span>📋</span> Recent Transactions</div>
+      <div id="transactions-list"><p style="color:var(--muted);font-size:13px">No transactions yet this month.</p></div>
+    </div>
+
+    <!-- Report -->
+    <div class="card">
+      <div class="card-title"><span>🤖</span> AI Financial Report</div>
+      <p class="card-label">Get personalized analysis and suggestions based on your habits.</p>
+      <button class="btn btn-accent mt-8" onclick="generateFinanceReport()">Generate Report</button>
+      <div id="finance-report"></div>
+    </div>
+  </div>
+
+  <!-- ===== PHYSICAL ===== -->
+  <div class="section" id="sec-physical" data-domain="physical">
+    <div class="section-title">💪 Physical Health</div>
+    <p class="section-desc">Track daily habits. At week's end, get suggestions for a healthier lifestyle.</p>
+
+    <div class="card">
+      <div class="card-title"><span>📱</span> Screen & Sedentary</div>
+      <div class="counter-row">
+        <div class="counter-label">Phone screen time (hrs)</div>
+        <div class="counter-ctrl">
+          <button class="counter-btn" onclick="changeCounter('phone',-1)">−</button>
+          <span class="counter-val" id="cnt-phone">0</span>
+          <button class="counter-btn" onclick="changeCounter('phone',1)">+</button>
+        </div>
+      </div>
+      <div class="counter-row">
+        <div class="counter-label">Time sitting down (hrs)</div>
+        <div class="counter-ctrl">
+          <button class="counter-btn" onclick="changeCounter('sitting',-1)">−</button>
+          <span class="counter-val" id="cnt-sitting">0</span>
+          <button class="counter-btn" onclick="changeCounter('sitting',1)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🥗</span> Nutrition</div>
+      <div class="counter-row">
+        <div class="counter-label">Sugary drinks</div>
+        <div class="counter-ctrl">
+          <button class="counter-btn" onclick="changeCounter('sugar_drinks',-1)">−</button>
+          <span class="counter-val" id="cnt-sugar_drinks">0</span>
+          <button class="counter-btn" onclick="changeCounter('sugar_drinks',1)">+</button>
+        </div>
+      </div>
+      <div class="counter-row">
+        <div class="counter-label">Sweets / candy servings</div>
+        <div class="counter-ctrl">
+          <button class="counter-btn" onclick="changeCounter('sweets',-1)">−</button>
+          <span class="counter-val" id="cnt-sweets">0</span>
+          <button class="counter-btn" onclick="changeCounter('sweets',1)">+</button>
+        </div>
+      </div>
+      <div class="counter-row">
+        <div class="counter-label">Fried food servings</div>
+        <div class="counter-ctrl">
+          <button class="counter-btn" onclick="changeCounter('fried',-1)">−</button>
+          <span class="counter-val" id="cnt-fried">0</span>
+          <button class="counter-btn" onclick="changeCounter('fried',1)">+</button>
+        </div>
+      </div>
+      <div class="counter-row">
+        <div class="counter-label">Home-cooked meals</div>
+        <div class="counter-ctrl">
+          <button class="counter-btn" onclick="changeCounter('cooked',-1)">−</button>
+          <span class="counter-val" id="cnt-cooked">0</span>
+          <button class="counter-btn" onclick="changeCounter('cooked',1)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>💧</span> Hydration & Activity</div>
+      <div class="counter-row">
+        <div class="counter-label">Glasses of water (250ml)</div>
+        <div class="counter-ctrl">
+          <button class="counter-btn" onclick="changeCounter('water',-1)">−</button>
+          <span class="counter-val" id="cnt-water">0</span>
+          <button class="counter-btn" onclick="changeCounter('water',1)">+</button>
+        </div>
+      </div>
+      <div class="card-label mt-8">Exercise time today (minutes)</div>
+      <input type="range" id="exercise-slider" min="0" max="120" step="5" value="0" oninput="document.getElementById('exercise-val').textContent=this.value+'min'" />
+      <div class="progress-label"><span>0</span><span id="exercise-val">0min</span><span>2hrs</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>📝</span> Notes</div>
+      <textarea id="physical-notes" placeholder="How do you feel today? Any symptoms, achievements..."></textarea>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+      <button class="btn btn-accent" onclick="savePhysicalDay()">💾 Save Today's Data</button>
+      <button class="btn" onclick="generatePhysicalReport()">📊 Weekly Report</button>
+    </div>
+    <div id="physical-report"></div>
+  </div>
+
+  <!-- ===== EDUCATION ===== -->
+  <div class="section" id="sec-edu" data-domain="edu">
+    <div class="section-title">📚 Education</div>
+    <p class="section-desc">Keep learning. Track what you're studying and growing in.</p>
+
+    <div class="card">
+      <div class="card-title"><span>➕</span> Log a Learning Activity</div>
+      <div class="grid-2">
+        <div>
+          <div class="card-label">What did you learn / study?</div>
+          <input type="text" id="edu-topic" placeholder="Topic or book title" />
+        </div>
+        <div>
+          <div class="card-label">Type</div>
+          <select class="field" id="edu-type">
+            <option>Book</option><option>Online Course</option><option>Podcast</option>
+            <option>Article</option><option>Seminar / Workshop</option><option>Documentary</option>
+            <option>Mentoring Session</option><option>Bible Study</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-label mt-8">Time spent (minutes)</div>
+      <input type="number" id="edu-time" placeholder="e.g. 45" />
+      <div class="card-label mt-8">Key takeaway / Notes</div>
+      <textarea id="edu-notes" placeholder="What will you apply from this?"></textarea>
+      <button class="btn btn-accent mt-12" onclick="logEducation()">+ Log Activity</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🎯</span> Learning Goals</div>
+      <div class="card-label">What do you want to learn this month?</div>
+      <textarea id="edu-goals" placeholder="e.g. Finish 2 books on leadership, complete Excel course..."></textarea>
+      <button class="btn btn-accent mt-8" onclick="saveEduGoals()">Save Goals</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>📋</span> Learning Log</div>
+      <div id="edu-log-list"><p style="color:var(--muted);font-size:13px">No activities logged yet.</p></div>
+    </div>
+
+    <button class="btn btn-accent" onclick="generateEduReport()">🤖 Get Learning Suggestions</button>
+    <div id="edu-report"></div>
+  </div>
+
+  <!-- ===== PROFESSIONAL ===== -->
+  <div class="section" id="sec-pro" data-domain="pro">
+    <div class="section-title">🚀 Professional</div>
+    <p class="section-desc">Grow in your career. Track goals, wins, and areas for development.</p>
+
+    <div class="card">
+      <div class="card-title"><span>🎯</span> Career Goals This Month</div>
+      <textarea id="pro-goals" placeholder="What do you want to achieve professionally this month?"></textarea>
+      <button class="btn btn-accent mt-8" onclick="saveProGoals()">Save</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>✅</span> Log Daily Professional Activity</div>
+      <div class="grid-2">
+        <div>
+          <div class="card-label">Activity</div>
+          <input type="text" id="pro-activity" placeholder="e.g. Finished project proposal" />
+        </div>
+        <div>
+          <div class="card-label">Category</div>
+          <select class="field" id="pro-cat">
+            <option>Completed Task</option><option>Meeting</option><option>Skill Development</option>
+            <option>Networking</option><option>Mentoring / Coaching</option><option>Problem Solved</option>
+            <option>Feedback Received</option><option>New Opportunity</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-label mt-8">Impact / Notes</div>
+      <textarea id="pro-notes" placeholder="What was the impact? What did you learn?"></textarea>
+      <button class="btn btn-accent mt-12" onclick="logPro()">+ Log Activity</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>📋</span> Professional Log</div>
+      <div id="pro-log-list"><p style="color:var(--muted);font-size:13px">No activities logged yet.</p></div>
+    </div>
+
+    <button class="btn btn-accent" onclick="generateProReport()">🤖 Get Career Suggestions</button>
+    <div id="pro-report"></div>
+  </div>
+
+  <!-- ===== SOCIAL ===== -->
+  <div class="section" id="sec-social" data-domain="social">
+    <div class="section-title">🌍 Social</div>
+    <p class="section-desc">Invest in your community and meaningful connections beyond family.</p>
+
+    <div class="card">
+      <div class="card-title"><span>🎯</span> Social Goals This Month</div>
+      <textarea id="social-goals" placeholder="e.g. Join a community group, volunteer, reconnect with old friends..."></textarea>
+      <button class="btn btn-accent mt-8" onclick="saveSocialGoals()">Save</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>✅</span> Log Social Activity</div>
+      <div class="grid-2">
+        <div>
+          <div class="card-label">Activity</div>
+          <input type="text" id="soc-activity" placeholder="e.g. Volunteered at shelter" />
+        </div>
+        <div>
+          <div class="card-label">Type</div>
+          <select class="field" id="soc-cat">
+            <option>Volunteering</option><option>Community Event</option><option>Reconnected with Friend</option>
+            <option>Made a New Friend</option><option>Acts of Kindness</option><option>Social Event</option>
+            <option>Support Given</option><option>Support Received</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-label mt-8">Reflection</div>
+      <textarea id="soc-notes" placeholder="How did it go? How did it make you feel?"></textarea>
+      <button class="btn btn-accent mt-12" onclick="logSocial()">+ Log Activity</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>📋</span> Social Log</div>
+      <div id="soc-log-list"><p style="color:var(--muted);font-size:13px">No activities logged yet.</p></div>
+    </div>
+
+    <button class="btn btn-accent" onclick="generateSocialReport()">🤖 Get Social Wellbeing Insights</button>
+    <div id="social-report"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="
+    text-align:center;
+    padding:24px 16px 36px;
+    border-top:1px solid var(--border);
+    margin-top:20px;
+    background:var(--surface);
+  ">
+    <div style="font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);letter-spacing:-0.5px;">Wholeness</div>
+    <div style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);opacity:.65;margin-top:2px;">Team21 Academy</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px;">© Innocent Forteh · Team21 Academy · All rights reserved.</div>
+    <div style="font-size:11px;color:var(--muted);opacity:.6;margin-top:4px;font-style:italic;">"A life well-tracked is a life well-lived"</div>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// STATE & STORAGE
+// ============================================================
+let STATE = {};
+const TODAY = new Date();
+const MONTH_KEY = `${TODAY.getFullYear()}-${String(TODAY.getMonth()+1).padStart(2,'0')}`;
+const WEEK_KEY = getWeekKey(TODAY);
+
+function getWeekKey(d) {
+  const s = new Date(d); s.setDate(d.getDate() - d.getDay());
+  return s.toISOString().split('T')[0];
+}
+
+function load() {
+  try { STATE = JSON.parse(localStorage.getItem('wholeness_state') || '{}'); } catch(e) { STATE = {}; }
+}
+function save() {
+  try { localStorage.setItem('wholeness_state', JSON.stringify(STATE)); } catch(e) {}
+}
+function get(path, def) {
+  return path.split('.').reduce((o, k) => (o && o[k] !== undefined ? o[k] : undefined), STATE) ?? def;
+}
+function set(path, val) {
+  const keys = path.split('.'); let o = STATE;
+  for (let i = 0; i < keys.length - 1; i++) {
+    if (!o[keys[i]] || typeof o[keys[i]] !== 'object') o[keys[i]] = {};
+    o = o[keys[i]];
+  }
+  o[keys[keys.length - 1]] = val;
+  save();
+}
+function push(path, val) {
+  const arr = get(path, []); arr.push(val); set(path, arr);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+load();
+const CURRENCIES = {'NG':'₦','CM':'FCFA','GH':'₵','KE':'KSh','ZA':'R','US':'$','GB':'£','EU':'€','CA':'CA$','AU':'A$','IN':'₹','BR':'R$','Other':'$'};
+let CUR_SYM = '$';
+let USER_NAME = '';
+
+function startApp() {
+  const name = document.getElementById('user-name').value.trim();
+  const country = document.getElementById('user-country').value;
+  if (!name || !country) { toast('Please enter your name and select your country'); return; }
+  const [cc, sym] = country.split('|');
+  CUR_SYM = sym;
+  USER_NAME = name;
+  set('user.name', name);
+  set('user.country', cc);
+  set('user.currency', sym);
+  document.getElementById('splash').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  initApp();
+}
+
+function initApp() {
+  load();
+  USER_NAME = get('user.name', '');
+  CUR_SYM = get('user.currency', '$');
+  document.getElementById('hdr-name').textContent = USER_NAME;
+  document.getElementById('hdr-date').textContent = TODAY.toDateString();
+  document.getElementById('fin-month-label').textContent = TODAY.toLocaleString('default',{month:'long',year:'numeric'});
+  document.querySelectorAll('.cur-sym').forEach(el => el.textContent = CUR_SYM);
+
+  // Check if returning user
+  if (get('user.name')) {
+    document.getElementById('splash').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+  }
+
+  buildSpiritualSection();
+  buildFamilySection();
+  loadFinanceGoals();
+  renderTransactions();
+  loadPhysicalCounters();
+  renderEduLog();
+  renderProLog();
+  renderSocLog();
+  loadGoalInputs();
+  loadEduGoals();
+  loadProGoals();
+  loadSocialGoals();
+  renderGoalsProgress();
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  document.querySelector(`[data-s="${id}"]`).classList.add('active');
+}
+
+// ============================================================
+// SPIRITUAL
+// ============================================================
+const SPIRITUAL_HABITS = {
+  morning: [
+    {id:'m1', label:'Meditate in the Word of God', icon:'📖'},
+    {id:'m2', label:'Pray (personal prayer time)', icon:'🙏'},
+    {id:'m3', label:'Journal / quiet reflection', icon:'✍️'},
+    {id:'m4', label:'Gratitude declaration', icon:'✨'},
+  ],
+  midday: [
+    {id:'d1', label:'Pause and offer thanks', icon:'🌿'},
+    {id:'d2', label:'Check your thoughts & mindset', icon:'🧠'},
+    {id:'d3', label:'Pray about any situation', icon:'🙏'},
+  ],
+  night: [
+    {id:'n1', label:'Thanksgiving & review of the day', icon:'🌙'},
+    {id:'n2', label:'Intercession for others', icon:'🕊️'},
+    {id:'n3', label:'Release / surrender before sleep', icon:'😌'},
+  ]
+};
+
+function buildSpiritualSection() {
+  const todayKey = TODAY.toISOString().split('T')[0];
+  ['morning','midday','night'].forEach(time => {
+    const container = document.getElementById(`${time}-habits`);
+    container.innerHTML = '';
+    SPIRITUAL_HABITS[time].forEach(habit => {
+      const done = get(`spirit.${todayKey}.${habit.id}`, false);
+      const div = document.createElement('div');
+      div.className = 'habit-item';
+      div.innerHTML = `
+        <div class="habit-check ${done ? 'done' : ''}" id="hc-${habit.id}" onclick="toggleHabit('${habit.id}','${time}')"></div>
+        <div>
+          <div class="habit-label">${habit.icon} ${habit.label}</div>
+        </div>`;
+      container.appendChild(div);
+    });
+  });
+
+  // Load journal
+  const journal = get(`spirit.${todayKey}.journal`, '');
+  document.getElementById('journal-text').value = journal;
+
+  // Streak
+  buildSpiritStreak();
+}
+
+function toggleHabit(id, time) {
+  const todayKey = TODAY.toISOString().split('T')[0];
+  const current = get(`spirit.${todayKey}.${id}`, false);
+  set(`spirit.${todayKey}.${id}`, !current);
+  buildSpiritualSection();
+  toast(!current ? '✅ Habit marked complete!' : 'Habit unmarked');
+}
+
+function saveJournal() {
+  const todayKey = TODAY.toISOString().split('T')[0];
+  const text = document.getElementById('journal-text').value;
+  set(`spirit.${todayKey}.journal`, text);
+  toast('📓 Journal saved!');
+}
+
+function buildSpiritStreak() {
+  const container = document.getElementById('spirit-streak');
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(TODAY); d.setDate(TODAY.getDate() - i);
+    const k = d.toISOString().split('T')[0];
+    const allHabits = [...SPIRITUAL_HABITS.morning, ...SPIRITUAL_HABITS.midday, ...SPIRITUAL_HABITS.night];
+    const done = allHabits.filter(h => get(`spirit.${k}.${h.id}`, false)).length;
+    days.push({day: d.toLocaleDateString('default',{weekday:'short'}), done, total: allHabits.length, isToday: i === 0});
+  }
+  container.innerHTML = `<div style="display:flex;gap:8px;justify-content:space-between">` +
+    days.map(d => `
+      <div style="text-align:center;flex:1">
+        <div style="font-size:10px;color:var(--muted);margin-bottom:4px">${d.day}</div>
+        <div style="width:36px;height:36px;border-radius:50%;margin:0 auto;
+          background:${d.done > 0 ? 'var(--accent-spirit)' : 'var(--surface2)'};
+          border:2px solid ${d.isToday ? 'var(--gold)' : 'transparent'};
+          display:flex;align-items:center;justify-content:center;
+          font-size:11px;font-weight:600;color:${d.done > 0 ? '#fff' : 'var(--muted)'}">
+          ${d.done}/${d.total}
+        </div>
+      </div>`).join('') + `</div>`;
+}
+
+// ============================================================
+// FAMILY
+// ============================================================
+const FAMILY_ACTIONS = ['Call / Video call','Text / Check in','Pray for them','Pray with them','Take out for dinner','Quality time','Write a letter/note','Gift','Help with a task','Other'];
+
+function addFamilyMember() {
+  const name = document.getElementById('fm-name').value.trim();
+  const rel = document.getElementById('fm-rel').value.trim();
+  if (!name) { toast('Please enter a name'); return; }
+  push('family.members', {id: Date.now(), name, rel, actions: []});
+  document.getElementById('fm-name').value = '';
+  document.getElementById('fm-rel').value = '';
+  buildFamilySection();
+  toast(`❤️ ${name} added!`);
+}
+
+function buildFamilySection() {
+  const members = get('family.members', []);
+  const container = document.getElementById('family-list');
+  if (!members.length) {
+    container.innerHTML = '<p style="color:var(--muted);font-size:13px;padding:8px 0">Add your first family member above.</p>';
+    return;
+  }
+  const todayKey = TODAY.toISOString().split('T')[0];
+  container.innerHTML = members.map((m, idx) => {
+    const memberActions = get(`family.log.${m.id}.${todayKey}`, []);
+    return `
+    <div class="card family-member">
+      <div style="display:flex;justify-content:space-between;align-items:start">
+        <div>
+          <div class="family-member-name">${m.name}</div>
+          <div style="font-size:12px;color:var(--muted)">${m.rel || ''}</div>
+        </div>
+        <button class="btn btn-small btn-danger" onclick="removeMember(${idx})">Remove</button>
+      </div>
+      <hr class="div">
+      <div class="card-label">Log an action today</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+        ${FAMILY_ACTIONS.map(a => `
+          <button class="tag" style="cursor:pointer;${memberActions.includes(a)?'background:var(--accent-family)20;border-color:var(--accent-family);color:var(--accent-family)':''}"
+            onclick="toggleFamilyAction(${m.id},'${a}')">${a}</button>
+        `).join('')}
+      </div>
+      ${memberActions.length ? `<div style="font-size:12px;color:var(--accent-family)">✅ Today: ${memberActions.join(', ')}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function toggleFamilyAction(memberId, action) {
+  const todayKey = TODAY.toISOString().split('T')[0];
+  const key = `family.log.${memberId}.${todayKey}`;
+  const actions = get(key, []);
+  const idx = actions.indexOf(action);
+  if (idx >= 0) actions.splice(idx, 1); else actions.push(action);
+  set(key, actions);
+  buildFamilySection();
+}
+
+function removeMember(idx) {
+  const members = get('family.members', []);
+  members.splice(idx, 1);
+  set('family.members', members);
+  buildFamilySection();
+}
+
+// ============================================================
+// FINANCE
+// ============================================================
+function loadGoalInputs() {
+  const goals = get(`finance.goals.${MONTH_KEY}`, {});
+  if (goals.spend) document.getElementById('goal-spend').value = goals.spend;
+  if (goals.save) document.getElementById('goal-save').value = goals.save;
+  if (goals.invest) document.getElementById('goal-invest').value = goals.invest;
+  if (goals.give) document.getElementById('goal-give').value = goals.give;
+}
+
+function saveGoals() {
+  const goals = {
+    spend: parseFloat(document.getElementById('goal-spend').value)||0,
+    save: parseFloat(document.getElementById('goal-save').value)||0,
+    invest: parseFloat(document.getElementById('goal-invest').value)||0,
+    give: parseFloat(document.getElementById('goal-give').value)||0,
+  };
+  set(`finance.goals.${MONTH_KEY}`, goals);
+  toast('🎯 Goals saved!');
+  renderGoalsProgress();
+}
+
+function loadFinanceGoals() { loadGoalInputs(); renderGoalsProgress(); }
+
+function renderGoalsProgress() {
+  const goals = get(`finance.goals.${MONTH_KEY}`, {});
+  const txns = get(`finance.txns.${MONTH_KEY}`, []);
+  if (!goals.spend && !goals.save) { document.getElementById('goals-progress-card').style.display='none'; return; }
+  document.getElementById('goals-progress-card').style.display='block';
+
+  const totalSpent = txns.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+  const totalIncome = txns.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+
+  const bars = [
+    {label:'Spending', used: totalSpent, goal: goals.spend, color:'var(--accent-finance)', inv: true},
+    {label:'Income', used: totalIncome, goal: goals.spend+goals.save+goals.invest+goals.give, color:'var(--gold)'},
+  ].filter(b=>b.goal>0);
+
+  document.getElementById('goals-progress').innerHTML = bars.map(b => {
+    const pct = Math.min((b.used/b.goal)*100,100).toFixed(0);
+    const color = b.inv && pct>90 ? '#ef4444' : b.color;
+    return `
+    <div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+        <span>${b.label}</span>
+        <span style="font-family:'DM Mono',monospace">${CUR_SYM}${b.used.toLocaleString()} / ${CUR_SYM}${b.goal.toLocaleString()}</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div>
+      <div class="progress-label"><span>${pct}%</span><span>${b.inv&&pct>80?'⚠️ Watch your spending':''}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function logIncome() {
+  const amount = parseFloat(document.getElementById('inc-amount').value);
+  const desc = document.getElementById('inc-desc').value.trim();
+  if (!amount) { toast('Enter an amount'); return; }
+  push(`finance.txns.${MONTH_KEY}`, {type:'income', amount, desc, date: TODAY.toISOString(), cat:'Income'});
+  document.getElementById('inc-amount').value = '';
+  document.getElementById('inc-desc').value = '';
+  renderTransactions();
+  renderGoalsProgress();
+  toast(`📈 ${CUR_SYM}${amount.toLocaleString()} income logged!`);
+}
+
+function logExpense() {
+  const amount = parseFloat(document.getElementById('exp-amount').value);
+  const desc = document.getElementById('exp-desc').value.trim();
+  const cat = document.getElementById('exp-cat').value;
+  if (!amount) { toast('Enter an amount'); return; }
+  push(`finance.txns.${MONTH_KEY}`, {type:'expense', amount, desc, cat, date: TODAY.toISOString()});
+  document.getElementById('exp-amount').value = '';
+  document.getElementById('exp-desc').value = '';
+  renderTransactions();
+  renderGoalsProgress();
+  toast(`📉 ${CUR_SYM}${amount.toLocaleString()} expense logged!`);
+}
+
+function renderTransactions() {
+  const txns = get(`finance.txns.${MONTH_KEY}`, []).slice().reverse().slice(0,20);
+  const el = document.getElementById('transactions-list');
+  if (!txns.length) { el.innerHTML = '<p style="color:var(--muted);font-size:13px">No transactions yet this month.</p>'; return; }
+  el.innerHTML = txns.map(t => `
+    <div class="log-entry">
+      <div>
+        <div style="color:${t.type==='income'?'var(--accent-finance)':'#f87171'}">${t.type==='income'?'▲':'▼'} ${CUR_SYM}${t.amount.toLocaleString()}</div>
+        <div class="log-desc">${t.cat || ''} ${t.desc ? '— ' + t.desc : ''}</div>
+      </div>
+      <div class="log-date">${new Date(t.date).toLocaleDateString()}</div>
+    </div>`).join('');
+}
+
+async function generateFinanceReport() {
+  const goals = get(`finance.goals.${MONTH_KEY}`, {});
+  const txns = get(`finance.txns.${MONTH_KEY}`, []);
+  const totalSpent = txns.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+  const totalIncome = txns.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const bycat = {};
+  txns.filter(t=>t.type==='expense').forEach(t=>{ bycat[t.cat]=(bycat[t.cat]||0)+t.amount; });
+
+  const el = document.getElementById('finance-report');
+  el.innerHTML = `<div class="report-loading" style="margin-top:14px"><div class="spinner"></div> Analyzing your finances...</div>`;
+
+  const prompt = `You are a warm, insightful personal finance coach. Analyze this person's financial data for ${TODAY.toLocaleString('default',{month:'long',year:'numeric'})} and give practical, encouraging, actionable advice.
+
+Currency: ${CUR_SYM}
+Monthly Goals: Spending limit ${CUR_SYM}${goals.spend||0}, Savings ${CUR_SYM}${goals.save||0}, Investment ${CUR_SYM}${goals.invest||0}, Giving ${CUR_SYM}${goals.give||0}
+Actual total spent: ${CUR_SYM}${totalSpent.toLocaleString()}
+Total income logged: ${CUR_SYM}${totalIncome.toLocaleString()}
+Spending by category: ${JSON.stringify(bycat)}
+Number of transactions: ${txns.length}
+
+Write a concise, structured report (under 300 words) with:
+1. 📊 Summary of current financial standing
+2. ✅ What they're doing well
+3. ⚠️ Areas of concern
+4. 💡 3 specific, practical suggestions to reach their goals
+
+Be encouraging, specific, and realistic. Use plain language.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    const data = await res.json();
+    const text = data.content?.find(b=>b.type==='text')?.text || 'Could not generate report.';
+    el.innerHTML = `<div id="report-output" style="margin-top:14px">${text.replace(/\n/g,'<br>')}</div>`;
+  } catch(e) {
+    el.innerHTML = `<div id="report-output" style="margin-top:14px;color:#ef4444">Error generating report. Please try again.</div>`;
+  }
+}
+
+// ============================================================
+// PHYSICAL
+// ============================================================
+const COUNTERS = ['phone','sitting','sugar_drinks','sweets','fried','cooked','water'];
+
+function loadPhysicalCounters() {
+  const todayKey = TODAY.toISOString().split('T')[0];
+  COUNTERS.forEach(c => {
+    const val = get(`physical.${todayKey}.${c}`, 0);
+    document.getElementById(`cnt-${c}`).textContent = val;
+  });
+  const exVal = get(`physical.${todayKey}.exercise`, 0);
+  const slider = document.getElementById('exercise-slider');
+  slider.value = exVal;
+  document.getElementById('exercise-val').textContent = exVal + 'min';
+  const notes = get(`physical.${todayKey}.notes`, '');
+  document.getElementById('physical-notes').value = notes;
+}
+
+function changeCounter(name, delta) {
+  const el = document.getElementById(`cnt-${name}`);
+  const newVal = Math.max(0, parseInt(el.textContent) + delta);
+  el.textContent = newVal;
+}
+
+function savePhysicalDay() {
+  const todayKey = TODAY.toISOString().split('T')[0];
+  COUNTERS.forEach(c => {
+    set(`physical.${todayKey}.${c}`, parseInt(document.getElementById(`cnt-${c}`).textContent));
+  });
+  set(`physical.${todayKey}.exercise`, parseInt(document.getElementById('exercise-slider').value));
+  set(`physical.${todayKey}.notes`, document.getElementById('physical-notes').value);
+  toast('💪 Physical data saved!');
+}
+
+async function generatePhysicalReport() {
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(TODAY); d.setDate(TODAY.getDate()-i);
+    const k = d.toISOString().split('T')[0];
+    const day = get(`physical.${k}`, null);
+    if (day) days.push({date: d.toDateString(), ...day});
+  }
+
+  const el = document.getElementById('physical-report');
+  el.innerHTML = `<div class="report-loading" style="margin-top:14px"><div class="spinner"></div> Evaluating your health habits...</div>`;
+
+  const prompt = `You are a compassionate wellness coach. Analyze this person's physical health habits over the past week and provide actionable suggestions.
+
+Weekly data (each day's logs):
+${JSON.stringify(days, null, 2)}
+
+Fields explanation: phone=hours on phone, sitting=hours sitting, sugar_drinks=count, sweets=servings, fried=fried food servings, cooked=home cooked meals, water=glasses of water, exercise=minutes exercised.
+
+Write a warm, motivating weekly health report (under 300 words):
+1. 🏃 Overall health snapshot for the week
+2. 💚 Healthy habits to celebrate
+3. 🔴 Habits to improve
+4. 📋 5 specific daily action steps for next week
+
+Keep it encouraging, practical, and specific.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    const data = await res.json();
+    const text = data.content?.find(b=>b.type==='text')?.text || 'Could not generate report.';
+    el.innerHTML = `<div id="report-output" style="margin-top:14px">${text.replace(/\n/g,'<br>')}</div>`;
+  } catch(e) {
+    el.innerHTML = `<div id="report-output" style="margin-top:14px;color:#ef4444">Error. Please try again.</div>`;
+  }
+}
+
+// ============================================================
+// EDUCATION
+// ============================================================
+function loadEduGoals() {
+  const g = get(`edu.goals.${MONTH_KEY}`, '');
+  document.getElementById('edu-goals').value = g;
+}
+function saveEduGoals() {
+  set(`edu.goals.${MONTH_KEY}`, document.getElementById('edu-goals').value);
+  toast('📚 Learning goals saved!');
+}
+function logEducation() {
+  const topic = document.getElementById('edu-topic').value.trim();
+  const time = parseInt(document.getElementById('edu-time').value)||0;
+  const type = document.getElementById('edu-type').value;
+  const notes = document.getElementById('edu-notes').value.trim();
+  if (!topic) { toast('Enter what you learned'); return; }
+  push(`edu.log`, {topic,time,type,notes,date:TODAY.toISOString()});
+  document.getElementById('edu-topic').value='';
+  document.getElementById('edu-time').value='';
+  document.getElementById('edu-notes').value='';
+  renderEduLog();
+  toast('📚 Learning logged!');
+}
+function renderEduLog() {
+  const log = get(`edu.log`,[]).slice().reverse().slice(0,15);
+  const el = document.getElementById('edu-log-list');
+  if (!log.length) { el.innerHTML='<p style="color:var(--muted);font-size:13px">No activities logged yet.</p>'; return; }
+  el.innerHTML = log.map(e=>`
+    <div class="log-entry">
+      <div>
+        <div style="font-weight:500">${e.topic}</div>
+        <div class="log-desc">${e.type} · ${e.time||0}min ${e.notes?'— '+e.notes:''}</div>
+      </div>
+      <div class="log-date">${new Date(e.date).toLocaleDateString()}</div>
+    </div>`).join('');
+}
+async function generateEduReport() {
+  const log = get(`edu.log`,[]);
+  const goals = get(`edu.goals.${MONTH_KEY}`,'None set');
+  const el = document.getElementById('edu-report');
+  el.innerHTML=`<div class="report-loading" style="margin-top:14px"><div class="spinner"></div>Generating learning insights...</div>`;
+  const prompt = `You are an encouraging lifelong learning coach. Analyze this person's learning activity and give motivating suggestions.
+
+Monthly learning goals: ${goals}
+Learning log (recent activities): ${JSON.stringify(log.slice(-20), null, 2)}
+
+Write a brief, energizing report (under 250 words):
+1. 📚 Learning summary — topics, hours, breadth
+2. 🌟 Strengths in their learning habits
+3. 💡 3 suggestions to deepen or diversify their learning
+4. 📅 A simple weekly learning rhythm to aim for
+
+Be specific, practical, and encouraging.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:prompt}]})});
+    const data = await res.json();
+    const text = data.content?.find(b=>b.type==='text')?.text||'Could not generate.';
+    el.innerHTML=`<div id="report-output" style="margin-top:14px">${text.replace(/\n/g,'<br>')}</div>`;
+  } catch(e){ el.innerHTML=`<div id="report-output" style="margin-top:14px;color:#ef4444">Error. Try again.</div>`;}
+}
+
+// ============================================================
+// PROFESSIONAL
+// ============================================================
+function loadProGoals(){ document.getElementById('pro-goals').value=get(`pro.goals.${MONTH_KEY}`,''); }
+function saveProGoals(){ set(`pro.goals.${MONTH_KEY}`,document.getElementById('pro-goals').value); toast('🚀 Career goals saved!'); }
+function logPro(){
+  const activity=document.getElementById('pro-activity').value.trim();
+  const cat=document.getElementById('pro-cat').value;
+  const notes=document.getElementById('pro-notes').value.trim();
+  if(!activity){toast('Enter an activity');return;}
+  push('pro.log',{activity,cat,notes,date:TODAY.toISOString()});
+  document.getElementById('pro-activity').value='';
+  document.getElementById('pro-notes').value='';
+  renderProLog();
+  toast('🚀 Activity logged!');
+}
+function renderProLog(){
+  const log=get('pro.log',[]).slice().reverse().slice(0,15);
+  const el=document.getElementById('pro-log-list');
+  if(!log.length){el.innerHTML='<p style="color:var(--muted);font-size:13px">No activities logged yet.</p>';return;}
+  el.innerHTML=log.map(e=>`<div class="log-entry"><div><div style="font-weight:500">${e.activity}</div><div class="log-desc">${e.cat}${e.notes?' — '+e.notes:''}</div></div><div class="log-date">${new Date(e.date).toLocaleDateString()}</div></div>`).join('');
+}
+async function generateProReport(){
+  const log=get('pro.log',[]);
+  const goals=get(`pro.goals.${MONTH_KEY}`,'None set');
+  const el=document.getElementById('pro-report');
+  el.innerHTML=`<div class="report-loading" style="margin-top:14px"><div class="spinner"></div>Generating career insights...</div>`;
+  const prompt=`You are a seasoned career coach and mentor. Analyze this person's professional activity log and goals, then give clear, motivating guidance.
+
+Monthly career goals: ${goals}
+Activity log (recent): ${JSON.stringify(log.slice(-20),null,2)}
+
+Write a concise, empowering career development report (under 250 words):
+1. 🚀 Professional momentum — what they're doing and how it maps to goals
+2. ✨ Key strengths demonstrated
+3. 📈 3 specific opportunities to grow professionally
+4. 🗓️ A 30-day action plan suggestion
+
+Be direct, specific, and encouraging.`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:prompt}]})});
+    const data=await res.json();
+    const text=data.content?.find(b=>b.type==='text')?.text||'Could not generate.';
+    el.innerHTML=`<div id="report-output" style="margin-top:14px">${text.replace(/\n/g,'<br>')}</div>`;
+  }catch(e){el.innerHTML=`<div id="report-output" style="margin-top:14px;color:#ef4444">Error. Try again.</div>`;}
+}
+
+// ============================================================
+// SOCIAL
+// ============================================================
+function loadSocialGoals(){ document.getElementById('social-goals').value=get(`social.goals.${MONTH_KEY}`,''); }
+function saveSocialGoals(){ set(`social.goals.${MONTH_KEY}`,document.getElementById('social-goals').value); toast('🌍 Social goals saved!'); }
+function logSocial(){
+  const activity=document.getElementById('soc-activity').value.trim();
+  const cat=document.getElementById('soc-cat').value;
+  const notes=document.getElementById('soc-notes').value.trim();
+  if(!activity){toast('Enter an activity');return;}
+  push('social.log',{activity,cat,notes,date:TODAY.toISOString()});
+  document.getElementById('soc-activity').value='';
+  document.getElementById('soc-notes').value='';
+  renderSocLog();
+  toast('🌍 Activity logged!');
+}
+function renderSocLog(){
+  const log=get('social.log',[]).slice().reverse().slice(0,15);
+  const el=document.getElementById('soc-log-list');
+  if(!log.length){el.innerHTML='<p style="color:var(--muted);font-size:13px">No activities logged yet.</p>';return;}
+  el.innerHTML=log.map(e=>`<div class="log-entry"><div><div style="font-weight:500">${e.activity}</div><div class="log-desc">${e.cat}${e.notes?' — '+e.notes:''}</div></div><div class="log-date">${new Date(e.date).toLocaleDateString()}</div></div>`).join('');
+}
+async function generateSocialReport(){
+  const log=get('social.log',[]);
+  const goals=get(`social.goals.${MONTH_KEY}`,'None set');
+  const el=document.getElementById('social-report');
+  el.innerHTML=`<div class="report-loading" style="margin-top:14px"><div class="spinner"></div>Generating social wellbeing insights...</div>`;
+  const prompt=`You are a community and social wellbeing coach. Analyze this person's social activity and give warm, meaningful guidance.
+
+Monthly social goals: ${goals}
+Social activity log: ${JSON.stringify(log.slice(-20),null,2)}
+
+Write a warm, insightful social wellbeing report (under 250 words):
+1. 🌍 Social health snapshot — how connected and contributing they are
+2. 💛 What they're doing that builds meaningful community
+3. 🔗 3 suggestions to deepen social impact and connection
+4. 🗓️ One small social commitment to make this week
+
+Make it human, warm, and practically encouraging.`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:prompt}]})});
+    const data=await res.json();
+    const text=data.content?.find(b=>b.type==='text')?.text||'Could not generate.';
+    el.innerHTML=`<div id="report-output" style="margin-top:14px">${text.replace(/\n/g,'<br>')}</div>`;
+  }catch(e){el.innerHTML=`<div id="report-output" style="margin-top:14px;color:#ef4444">Error. Try again.</div>`;}
+}
+
+// ============================================================
+// AUTO-LOAD IF RETURNING USER
+// ============================================================
+window.addEventListener('DOMContentLoaded', () => {
+  load();
+  const name = get('user.name','');
+  if (name) {
+    USER_NAME = name;
+    CUR_SYM = get('user.currency','$');
+    document.getElementById('splash').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    initApp();
+  }
+});
+</script>
+</body>
+</html>
