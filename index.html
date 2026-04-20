@@ -4,303 +4,564 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wholeness — Life Tracker | Team21 Academy</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0d0f14;
-    --surface: #13161e;
-    --surface2: #1a1e2a;
-    --border: #252a38;
-    --text: #e8eaf0;
-    --muted: #6b7280;
-    --accent-spirit: #c084fc;
-    --accent-family: #f472b6;
-    --accent-finance: #34d399;
-    --accent-physical: #60a5fa;
-    --accent-edu: #fbbf24;
-    --accent-pro: #f97316;
-    --accent-social: #e879f9;
-    --gold: #d4a853;
-    --radius: 16px;
-    --radius-sm: 10px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+:root {
+  --bg: #080a0e;
+  --surface: #0e1118;
+  --surface2: #151921;
+  --surface3: #1c2130;
+  --border: #1f2535;
+  --border2: #2a3248;
+  --text: #e8eaf2;
+  --muted: #5a6380;
+  --muted2: #8491b0;
+  --gold: #c9a84c;
+  --gold2: #e8c97a;
+  --gold-dim: rgba(201,168,76,0.12);
+  --accent-spirit: #a78bfa;
+  --accent-family: #f472b6;
+  --accent-finance: #34d399;
+  --accent-physical: #60a5fa;
+  --accent-edu: #fbbf24;
+  --accent-pro: #fb923c;
+  --accent-social: #e879f9;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Josefin Sans',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
-  #splash {
-    position: fixed; inset: 0; z-index: 1000;
-    background: var(--bg);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 24px; padding: 24px; text-align: center;
-  }
-  .splash-logo { font-family: 'Playfair Display', serif; font-size: 52px; color: var(--gold); letter-spacing: -1px; }
-  .splash-sub { font-size: 15px; color: var(--muted); max-width: 320px; line-height: 1.6; }
-  .splash-credit { font-size: 12px; color: var(--muted); margin-top: 8px; }
-  .splash-form { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 340px; margin-top: 8px; }
-  .splash-form input {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); padding: 14px 16px;
-    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px;
-    outline: none; transition: border-color .2s;
-  }
-  .splash-form input:focus { border-color: var(--gold); }
-  .btn-primary {
-    background: var(--gold); color: #0d0f14; font-weight: 600; font-size: 15px;
-    border: none; border-radius: var(--radius-sm); padding: 14px 24px;
-    cursor: pointer; transition: opacity .2s; font-family: 'DM Sans', sans-serif;
-  }
-  .btn-primary:hover { opacity: .85; }
-  .orb {
-    position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; opacity: .18;
-  }
-  .orb1 { width: 400px; height: 400px; background: var(--accent-spirit); top: -100px; left: -100px; }
-  .orb2 { width: 350px; height: 350px; background: var(--accent-finance); bottom: -80px; right: -80px; }
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
 
-  #app { display: none; }
-  header {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(13,15,20,.92); backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 20px; display: flex; align-items: center; gap: 16px; height: 60px;
-    justify-content: space-between;
-  }
-  .header-left { display: flex; align-items: center; gap: 16px; }
-  .header-logo { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold); }
-  .header-info { display: flex; gap: 20px; }
-  .header-user { font-size: 13px; color: var(--muted); }
-  .header-date { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
-  .header-btn { cursor: pointer; color: var(--muted); font-size: 12px; transition: all .2s; }
-  .header-btn:hover { color: var(--gold); }
+/* ── SPLASH ── */
+#splash{
+  position:fixed;inset:0;z-index:1000;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:24px;padding:32px;text-align:center;
+}
+.splash-noise{
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;
+}
+.orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;}
+.orb1{width:500px;height:500px;background:rgba(167,139,250,0.08);top:-150px;left:-150px;}
+.orb2{width:400px;height:400px;background:rgba(201,168,76,0.07);bottom:-100px;right:-100px;}
+.splash-emblem{
+  font-size:11px;letter-spacing:6px;color:var(--gold);
+  text-transform:uppercase;margin-bottom:4px;
+  font-family:'Josefin Sans',sans-serif;font-weight:300;
+}
+.splash-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:64px;font-weight:300;
+  color:var(--text);letter-spacing:-2px;line-height:1;
+}
+.splash-logo span{color:var(--gold);}
+.splash-line{
+  width:60px;height:1px;background:var(--gold);opacity:0.4;
+  margin:4px auto;
+}
+.splash-sub{font-size:11px;color:var(--muted2);letter-spacing:4px;text-transform:uppercase;font-weight:300;}
+.splash-credit{font-size:11px;color:var(--muted);margin-top:8px;letter-spacing:1px;}
+.splash-form{display:flex;flex-direction:column;gap:14px;width:100%;max-width:320px;margin-top:16px;}
+.splash-field-wrap{position:relative;}
+.splash-form input{
+  background:transparent;
+  border:none;border-bottom:1px solid var(--border2);
+  padding:12px 0;width:100%;
+  color:var(--text);font-family:'Josefin Sans',sans-serif;font-size:14px;
+  outline:none;transition:border-color .3s;letter-spacing:1px;
+  text-align:center;
+}
+.splash-form input::placeholder{color:var(--muted);letter-spacing:2px;font-size:12px;}
+.splash-form input:focus{border-color:var(--gold);}
+.btn-primary{
+  background:transparent;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  font-family:'Josefin Sans',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:4px;text-transform:uppercase;
+  padding:14px 32px;cursor:pointer;
+  transition:all .3s;margin-top:8px;
+}
+.btn-primary:hover{background:var(--gold);color:#080a0e;}
 
-  nav {
-    display: flex; overflow-x: auto; gap: 6px; padding: 12px 16px;
-    border-bottom: 1px solid var(--border); scrollbar-width: none;
-    background: var(--surface);
-  }
-  nav::-webkit-scrollbar { display: none; }
-  .nav-btn {
-    display: flex; flex-direction: column; align-items: center; gap: 3px;
-    padding: 8px 14px; border-radius: var(--radius-sm);
-    border: 1px solid transparent; background: none;
-    color: var(--muted); cursor: pointer; transition: all .2s;
-    white-space: nowrap; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
-    min-width: 68px;
-  }
-  .nav-btn .icon { font-size: 20px; }
-  .nav-btn.active { background: var(--surface2); border-color: var(--border); color: var(--text); }
-  .nav-btn.active .icon { filter: drop-shadow(0 0 6px currentColor); }
+/* ── HEADER ── */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(8,10,14,0.95);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 24px;display:flex;align-items:center;height:58px;
+  justify-content:space-between;
+}
+.header-logo{
+  font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;
+  color:var(--gold);letter-spacing:1px;display:flex;align-items:center;gap:8px;
+}
+.header-logo-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);}
+.header-right{display:flex;align-items:center;gap:16px;}
+.header-user{font-size:11px;color:var(--muted2);letter-spacing:2px;}
+.header-date{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
+.header-btn{
+  cursor:pointer;color:var(--muted);font-size:11px;
+  letter-spacing:2px;transition:color .2s;
+  text-transform:uppercase;
+}
+.header-btn:hover{color:var(--gold);}
 
-  .section { display: none; padding: 20px 16px 100px; max-width: 700px; margin: 0 auto; }
-  .section.active { display: block; }
-  .section-title {
-    font-family: 'Playfair Display', serif; font-size: 26px;
-    margin-bottom: 4px; display: flex; align-items: center; gap: 10px;
-  }
-  .section-desc { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+/* ── NAV TABS ── */
+nav{
+  display:flex;overflow-x:auto;
+  border-bottom:1px solid var(--border);
+  background:var(--surface);
+  scrollbar-width:none;
+  padding:0 8px;
+}
+nav::-webkit-scrollbar{display:none;}
+.nav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:12px 16px;
+  border:none;border-bottom:2px solid transparent;
+  background:none;color:var(--muted);
+  cursor:pointer;transition:all .25s;
+  white-space:nowrap;
+  font-family:'Josefin Sans',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;min-width:76px;
+  position:relative;top:1px;
+}
+.nav-btn .icon{font-size:18px;transition:filter .25s;}
+.nav-btn.active{color:var(--text);border-bottom-color:var(--gold);}
+.nav-btn.active .icon{filter:drop-shadow(0 0 8px var(--gold));}
+.nav-btn:hover:not(.active){color:var(--muted2);}
 
-  .card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 18px; margin-bottom: 14px;
-  }
-  .card-title { font-weight: 600; font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-  .card-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 500; letter-spacing: .3px; }
+/* ── SECTIONS ── */
+.section{display:none;padding:24px 20px 120px;max-width:720px;margin:0 auto;}
+.section.active{display:block;}
 
-  input[type=text], input[type=number], textarea, select.field {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); padding: 10px 14px;
-    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
-    outline: none; transition: border-color .2s; width: 100%;
-  }
-  input:focus, textarea:focus, select.field:focus { border-color: var(--gold); }
-  textarea { resize: vertical; min-height: 70px; }
-  select.field option { background: #1a1e2a; }
+.section-header{margin-bottom:28px;}
+.section-eyebrow{
+  font-size:10px;letter-spacing:4px;color:var(--gold);
+  text-transform:uppercase;font-weight:600;margin-bottom:8px;
+}
+.section-title{
+  font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;
+  margin-bottom:8px;display:flex;align-items:center;gap:12px;line-height:1;
+}
+.section-desc{font-size:12px;color:var(--muted2);letter-spacing:1px;line-height:1.7;}
 
-  .btn {
-    padding: 10px 18px; border-radius: var(--radius-sm); border: 1px solid var(--border);
-    background: var(--surface2); color: var(--text); font-family: 'DM Sans', sans-serif;
-    font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s;
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .btn:hover { border-color: var(--gold); color: var(--gold); }
-  .btn-accent {
-    background: var(--gold); color: #0d0f14; border-color: var(--gold);
-    font-weight: 600;
-  }
-  .btn-accent:hover { opacity: .9; }
-  .btn-sm { padding: 6px 12px; font-size: 12px; }
+/* Tab quick-links inside each section */
+.quick-links{
+  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;
+}
+.quick-link{
+  font-size:10px;letter-spacing:2px;color:var(--muted);
+  text-transform:uppercase;cursor:pointer;
+  padding:5px 10px;border:1px solid var(--border2);
+  border-radius:var(--radius-xs);transition:all .2s;
+}
+.quick-link:hover{color:var(--gold);border-color:var(--gold);}
 
-  .log-entry {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    padding: 12px 0; border-bottom: 1px solid var(--border);
-  }
-  .log-entry:last-child { border-bottom: none; }
-  .log-desc { font-size: 12px; color: var(--muted); margin-top: 3px; }
-  .log-date { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
+/* ── CARDS ── */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;margin-bottom:16px;
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.015) 0%,transparent 60%);
+  pointer-events:none;
+}
+.card-accent{border-left:2px solid var(--gold);padding-left:18px;}
+.card-title{
+  font-size:11px;font-weight:600;letter-spacing:3px;
+  text-transform:uppercase;color:var(--muted2);
+  margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;
+}
+.card-label{
+  font-size:10px;letter-spacing:2px;color:var(--muted);
+  text-transform:uppercase;margin-bottom:8px;margin-top:14px;font-weight:600;
+}
 
-  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
-  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; text-align: center; }
-  .stat-value { font-size: 24px; font-weight: 700; color: var(--gold); }
-  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; margin-top: 6px; }
+/* ── INPUTS ── */
+input[type=text],input[type=number],textarea,select.field,.field-date{
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:var(--radius-sm);padding:11px 14px;
+  color:var(--text);font-family:'Josefin Sans',sans-serif;font-size:13px;
+  outline:none;transition:border-color .2s,box-shadow .2s;width:100%;
+  letter-spacing:.5px;
+}
+input:focus,textarea:focus,select.field:focus,.field-date:focus{
+  border-color:var(--gold);box-shadow:0 0 0 2px rgba(201,168,76,0.08);
+}
+textarea{resize:vertical;min-height:72px;line-height:1.6;}
+select.field option{background:#1c2130;}
+input[type=date].field-date{color-scheme:dark;}
 
-  .report-section { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-  .report-section:last-child { border-bottom: none; }
-  .report-stat { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; }
-  .report-label { font-size: 13px; color: var(--muted); }
-  .report-value { font-size: 16px; font-weight: 600; color: var(--gold); font-family: 'DM Mono', monospace; }
-  .report-insight { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; margin: 8px 0; font-size: 13px; line-height: 1.5; }
+/* Date picker for daily logging */
+.date-row{display:flex;gap:10px;align-items:center;margin-bottom:0;}
+.date-row input[type=date]{flex:1;}
+.date-quick{
+  font-size:10px;letter-spacing:1px;color:var(--gold);
+  cursor:pointer;padding:11px 10px;border:1px solid var(--border2);
+  border-radius:var(--radius-sm);background:var(--surface2);
+  white-space:nowrap;transition:all .2s;
+}
+.date-quick:hover{background:var(--gold-dim);border-color:var(--gold);}
 
-  .toast {
-    position: fixed; bottom: 20px; left: 20px; right: 20px; max-width: 400px;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); padding: 14px 16px;
-    font-size: 13px; z-index: 999;
-    animation: slideIn .3s ease-out;
-  }
-  @keyframes slideIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+/* ── BUTTONS ── */
+.btn{
+  padding:10px 18px;border-radius:var(--radius-sm);
+  border:1px solid var(--border2);
+  background:var(--surface2);color:var(--muted2);
+  font-family:'Josefin Sans',sans-serif;
+  font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  cursor:pointer;transition:all .2s;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.btn:hover{border-color:var(--gold);color:var(--gold);}
+.btn-gold{
+  background:var(--gold);color:#080a0e;border-color:var(--gold);font-weight:700;
+}
+.btn-gold:hover{background:var(--gold2);border-color:var(--gold2);color:#080a0e;}
+.btn-sm{padding:7px 14px;font-size:9px;letter-spacing:1.5px;}
+.btn-xs{padding:5px 10px;font-size:9px;letter-spacing:1px;}
 
-  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 2000; align-items: center; justify-content: center; }
-  .modal.active { display: flex; }
-  .modal-content { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; }
-  .modal-title { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 16px; }
-  .modal-close { float: right; cursor: pointer; font-size: 24px; color: var(--muted); }
-  .modal-close:hover { color: var(--text); }
+/* ── FAMILY MEMBER TAGS ── */
+.member-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
+.member-input-row{display:flex;gap:8px;}
+.member-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--surface3);border:1px solid var(--border2);
+  border-radius:24px;padding:5px 12px;
+  font-size:11px;color:var(--text);letter-spacing:.5px;
+}
+.member-tag-remove{
+  cursor:pointer;color:var(--muted);font-size:14px;line-height:1;
+  transition:color .2s;
+}
+.member-tag-remove:hover{color:#f87171;}
 
-  .export-option { margin: 12px 0; }
-  .export-option label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-  .export-option input { cursor: pointer; }
+/* ── GOAL / TASK ITEMS ── */
+.goal-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:12px 0;border-bottom:1px solid var(--border);
+}
+.goal-item:last-child{border-bottom:none;}
+.goal-check{
+  width:18px;height:18px;min-width:18px;
+  border:1px solid var(--border2);border-radius:4px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;background:var(--surface2);margin-top:1px;
+}
+.goal-check.done{background:var(--gold);border-color:var(--gold);}
+.goal-check.done::after{content:'✓';font-size:11px;color:#080a0e;font-weight:700;}
+.goal-text{flex:1;font-size:13px;line-height:1.5;}
+.goal-text.done{text-decoration:line-through;color:var(--muted);}
+.goal-meta{font-size:10px;color:var(--muted);letter-spacing:1px;margin-top:3px;}
+.goal-del{color:var(--muted);cursor:pointer;font-size:16px;transition:color .2s;line-height:1;}
+.goal-del:hover{color:#f87171;}
 
-  .month-selector { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; }
-  .month-selector select { flex: 1; }
-  .month-selector-label { font-size: 12px; color: var(--muted); font-weight: 500; }
+/* ── LOG ENTRIES ── */
+.log-entry{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:14px 0;border-bottom:1px solid var(--border);
+}
+.log-entry:last-child{border-bottom:none;}
+.log-title{font-size:13px;font-weight:600;letter-spacing:.3px;}
+.log-desc{font-size:11px;color:var(--muted2);margin-top:4px;letter-spacing:.5px;line-height:1.5;}
+.log-date{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;white-space:nowrap;margin-top:2px;}
+.log-del{color:var(--muted);cursor:pointer;font-size:14px;transition:color .2s;padding:0 4px;}
+.log-del:hover{color:#f87171;}
+
+/* ── STATS ── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px;}
+.stat-box{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:14px 12px;text-align:center;
+}
+.stat-value{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--gold);}
+.stat-label{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+
+/* ── REPORT ── */
+.report-section{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.report-section:last-child{border-bottom:none;}
+.report-stat{display:flex;justify-content:space-between;align-items:center;padding:8px 0;}
+.report-label{font-size:12px;color:var(--muted2);}
+.report-value{font-size:14px;font-weight:600;color:var(--gold);font-family:'DM Mono',monospace;}
+.report-insight{
+  background:var(--surface2);border:1px solid var(--border);border-left:2px solid var(--gold);
+  border-radius:var(--radius-sm);padding:14px;margin:10px 0;
+  font-size:13px;line-height:1.6;color:var(--muted2);
+}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  background:var(--surface);border:1px solid var(--gold);
+  border-radius:var(--radius-sm);padding:12px 24px;
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);z-index:9999;
+  animation:toastIn .3s ease-out,toastOut .3s ease-out 2.2s forwards;
+  white-space:nowrap;
+}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(20px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+@keyframes toastOut{from{opacity:1;}to{opacity:0;}}
+
+/* ── MODAL ── */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:2000;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal.active{display:flex;}
+.modal-content{
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:var(--radius);padding:28px;
+  max-width:500px;width:90%;max-height:85vh;overflow-y:auto;
+}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;margin-bottom:4px;}
+.modal-eyebrow{font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;}
+.modal-close{float:right;cursor:pointer;font-size:22px;color:var(--muted);transition:color .2s;}
+.modal-close:hover{color:var(--text);}
+.export-option{margin:10px 0;}
+.export-option label{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:12px;letter-spacing:1px;color:var(--muted2);}
+.export-option input[type=checkbox]{cursor:pointer;accent-color:var(--gold);}
+
+/* ── BIBLE TICKER ── */
+#verse-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(8,10,14,0.97);border-top:1px solid var(--border);
+  padding:10px 20px;z-index:90;
+  display:flex;align-items:center;gap:12px;overflow:hidden;
+}
+.verse-icon{font-size:14px;flex-shrink:0;color:var(--gold);}
+.verse-ticker-wrap{flex:1;overflow:hidden;height:20px;}
+.verse-text{
+  font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;
+  color:var(--muted2);white-space:nowrap;
+  animation:verseFade 8s ease-in-out infinite;
+}
+@keyframes verseFade{0%{opacity:0;transform:translateY(6px);}10%{opacity:1;transform:translateY(0);}85%{opacity:1;}100%{opacity:0;}}
+
+/* ── DIVIDER ── */
+.divider{height:1px;background:var(--border);margin:16px 0;}
+.section-sep{
+  display:flex;align-items:center;gap:12px;margin:24px 0 20px;
+}
+.section-sep-line{flex:1;height:1px;background:var(--border);}
+.section-sep-text{font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+
+/* ── ADD GOAL FORM ── */
+.goal-form{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.goal-form-row{display:flex;gap:8px;}
+.goal-form-row input{flex:1;}
+.goal-priority{display:flex;gap:6px;}
+.priority-dot{
+  width:10px;height:10px;border-radius:50%;cursor:pointer;
+  border:2px solid transparent;transition:all .2s;
+}
+.priority-dot.high{background:#f87171;}
+.priority-dot.med{background:var(--gold);}
+.priority-dot.low{background:#34d399;}
+.priority-dot.selected{border-color:var(--text);transform:scale(1.3);}
+
+/* Responsive */
+@media(max-width:480px){
+  .header-date{display:none;}
+  .section{padding:16px 14px 120px;}
+  .stat-value{font-size:26px;}
+}
 </style>
 </head>
 <body>
 
-<div id="splash" class="splash-bg">
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-noise"></div>
   <div class="orb orb1"></div>
   <div class="orb orb2"></div>
-  <div class="splash-logo">Wholeness</div>
-  <div class="splash-sub">Life Tracker • Personal Progress Management</div>
-  <div class="splash-credit">Team21 Academy | © Innocent Forteh</div>
+  <div class="splash-emblem">Team21 Academy</div>
+  <div class="splash-logo">Whole<span>ness</span></div>
+  <div class="splash-line"></div>
+  <div class="splash-sub">Life Tracker &nbsp;·&nbsp; Personal Excellence</div>
   <form class="splash-form" onsubmit="handleLogin(event)">
-    <input type="text" id="username" placeholder="Username" required>
-    <button type="submit" class="btn-primary">Enter</button>
+    <input type="text" id="username" placeholder="Enter your name" required autocomplete="off">
+    <button type="submit" class="btn-primary">Begin Your Journey</button>
   </form>
+  <div class="splash-credit">© Innocent Forteh &nbsp;·&nbsp; Inno4te Publishing</div>
 </div>
 
-<div id="app">
+<!-- APP -->
+<div id="app" style="display:none">
   <header>
-    <div class="header-left">
-      <div class="header-logo">◆ Wholeness</div>
+    <div class="header-logo">
+      <div class="header-logo-dot"></div>
+      Wholeness
     </div>
-    <div class="header-info">
+    <div class="header-right">
       <div class="header-user" id="header-user"></div>
       <div class="header-date" id="header-date"></div>
-      <div class="header-btn" id="export-btn" onclick="toggleExportModal()" title="Export data">📊 Export</div>
-      <div class="header-btn" id="logout-btn" onclick="handleLogout()" title="Logout">🚪 Logout</div>
+      <div class="header-btn" onclick="openReportModal()">📊 Report</div>
+      <div class="header-btn" onclick="toggleExportModal()">↓ Export</div>
+      <div class="header-btn" onclick="handleLogout()">Exit</div>
     </div>
   </header>
 
-  <nav id="nav">
-    <button class="nav-btn active" onclick="switchTab('spirit')"><div class="icon">🧘</div><div>Spirit</div></button>
-    <button class="nav-btn" onclick="switchTab('family')"><div class="icon">👨‍👩‍👧</div><div>Family</div></button>
-    <button class="nav-btn" onclick="switchTab('finance')"><div class="icon">💰</div><div>Finance</div></button>
-    <button class="nav-btn" onclick="switchTab('physical')"><div class="icon">💪</div><div>Physical</div></button>
-    <button class="nav-btn" onclick="switchTab('edu')"><div class="icon">📚</div><div>Education</div></button>
-    <button class="nav-btn" onclick="switchTab('pro')"><div class="icon">🚀</div><div>Professional</div></button>
-    <button class="nav-btn" onclick="switchTab('social')"><div class="icon">🌍</div><div>Social</div></button>
+  <nav id="main-nav">
+    <button class="nav-btn active" onclick="switchTab('spirit',this)"><div class="icon">🧘</div>Spirit</button>
+    <button class="nav-btn" onclick="switchTab('family',this)"><div class="icon">👨‍👩‍👧</div>Family</button>
+    <button class="nav-btn" onclick="switchTab('finance',this)"><div class="icon">💰</div>Finance</button>
+    <button class="nav-btn" onclick="switchTab('physical',this)"><div class="icon">💪</div>Physical</button>
+    <button class="nav-btn" onclick="switchTab('edu',this)"><div class="icon">📚</div>Education</button>
+    <button class="nav-btn" onclick="switchTab('pro',this)"><div class="icon">🚀</div>Professional</button>
+    <button class="nav-btn" onclick="switchTab('social',this)"><div class="icon">🌍</div>Social</button>
   </nav>
 
-  <!-- SPIRIT -->
+  <!-- ====== SPIRIT ====== -->
   <div id="spirit" class="section active">
-    <h2 class="section-title"><span>🧘</span>Spiritual Wellbeing</h2>
-    <p class="section-desc">Track your meditation, reflection, and spiritual growth.</p>
-    
-    <div class="card">
-      <div class="card-title">Monthly Goals</div>
-      <textarea id="spirit-goals" placeholder="What do you want to achieve spiritually this month?"></textarea>
-      <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="saveSpiritGoals()">Save Goals</button>
+    <div class="section-header">
+      <div class="section-eyebrow">Pillar One</div>
+      <h2 class="section-title"><span>🧘</span> Spiritual Wellbeing</h2>
+      <p class="section-desc">Cultivate your inner life — prayer, meditation, reflection, and connection with God.</p>
+    </div>
+    <div class="quick-links" id="spirit-links"></div>
+
+    <!-- GOALS / TASKS -->
+    <div class="card card-accent">
+      <div class="card-title">Goals & Daily Tasks</div>
+      <div class="goal-form">
+        <input type="text" id="spirit-goal-input" placeholder="Add a goal or daily task…" onkeydown="if(event.key==='Enter')addGoal('spirit')">
+        <div class="goal-form-row">
+          <input type="date" id="spirit-goal-date" class="field-date" style="flex:1">
+          <div class="goal-priority" id="spirit-goal-priority">
+            <div class="priority-dot high" title="High" onclick="selectPriority('spirit','high',this)"></div>
+            <div class="priority-dot med selected" title="Medium" onclick="selectPriority('spirit','med',this)"></div>
+            <div class="priority-dot low" title="Low" onclick="selectPriority('spirit','low',this)"></div>
+          </div>
+          <button class="btn btn-gold btn-sm" onclick="addGoal('spirit')">+ Add</button>
+        </div>
+      </div>
+      <div id="spirit-goals-list"></div>
     </div>
 
+    <!-- LOG ACTIVITY -->
     <div class="card">
       <div class="card-title">Log Activity</div>
-      <div class="month-selector">
-        <span class="month-selector-label">Assign to Month:</span>
-        <select class="field" id="spirit-month"></select>
+      <div class="card-label">Date</div>
+      <div class="date-row">
+        <input type="date" id="spirit-log-date" class="field-date">
+        <div class="date-quick" onclick="setToday('spirit-log-date')">Today</div>
       </div>
       <div class="card-label">Activity Type</div>
       <select class="field" id="spirit-type">
-        <option>Meditation</option>
         <option>Prayer</option>
+        <option>Bible Study</option>
+        <option>Meditation</option>
         <option>Journaling</option>
+        <option>Worship</option>
+        <option>Fasting</option>
         <option>Reflection</option>
-        <option>Nature Walk</option>
+        <option>Church / Fellowship</option>
         <option>Other</option>
       </select>
-      <div class="card-label" style="margin-top:12px">Duration (minutes)</div>
+      <div class="card-label">Duration (minutes)</div>
       <input type="number" id="spirit-time" placeholder="0" min="0">
-      <div class="card-label" style="margin-top:12px">Notes</div>
-      <textarea id="spirit-notes" placeholder="How did it feel?"></textarea>
-      <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="logSpirit()">Log Activity</button>
+      <div class="card-label">Notes / Reflection</div>
+      <textarea id="spirit-notes" placeholder="What did God reveal to you today?"></textarea>
+      <button class="btn btn-gold btn-sm" style="margin-top:12px" onclick="logSpirit()">Log Activity</button>
     </div>
 
+    <!-- LOG LIST -->
     <div class="card">
       <div class="card-title">Recent Activity</div>
       <div id="spirit-log-list"></div>
     </div>
 
+    <!-- INSIGHTS -->
     <div class="card">
-      <div class="card-title" style="justify-content:space-between">
-        <span>📈 Insights</span>
-        <button class="btn btn-sm" onclick="generateSpiritReport()">Generate Report</button>
+      <div class="card-title">
+        <span>Insights & Report</span>
+        <button class="btn btn-sm" onclick="generateSpiritReport()">Generate</button>
       </div>
       <div id="spirit-report"></div>
     </div>
-
-    <div class="card">
-      <div class="card-title">📊 Month Comparison</div>
-      <div class="card-label">Select Month to View:</div>
-      <select class="field" id="spirit-compare-month" style="margin-bottom:12px" onchange="generateSpiritMonthComparison()"></select>
-      <div id="spirit-month-comparison"></div>
-    </div>
   </div>
 
-  <!-- FAMILY -->
+  <!-- ====== FAMILY ====== -->
   <div id="family" class="section">
-    <h2 class="section-title"><span>👨‍👩‍👧</span>Family Connections</h2>
-    <p class="section-desc">Track time with loved ones and strengthen relationships.</p>
+    <div class="section-header">
+      <div class="section-eyebrow">Pillar Two</div>
+      <h2 class="section-title"><span>👨‍👩‍👧</span> Family Connections</h2>
+      <p class="section-desc">Intentionally invest in the people who matter most to you.</p>
+    </div>
+    <div class="quick-links" id="family-links"></div>
 
-    <div class="card">
-      <div class="card-title">Monthly Goals</div>
-      <textarea id="family-goals" placeholder="What are your family goals this month?"></textarea>
-      <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="saveFamilyGoals()">Save Goals</button>
+    <!-- GOALS -->
+    <div class="card card-accent">
+      <div class="card-title">Goals & Daily Tasks</div>
+      <div class="goal-form">
+        <input type="text" id="family-goal-input" placeholder="Add a family goal or task…" onkeydown="if(event.key==='Enter')addGoal('family')">
+        <div class="goal-form-row">
+          <input type="date" id="family-goal-date" class="field-date" style="flex:1">
+          <div class="goal-priority" id="family-goal-priority">
+            <div class="priority-dot high" title="High" onclick="selectPriority('family','high',this)"></div>
+            <div class="priority-dot med selected" title="Medium" onclick="selectPriority('family','med',this)"></div>
+            <div class="priority-dot low" title="Low" onclick="selectPriority('family','low',this)"></div>
+          </div>
+          <button class="btn btn-gold btn-sm" onclick="addGoal('family')">+ Add</button>
+        </div>
+      </div>
+      <div id="family-goals-list"></div>
     </div>
 
+    <!-- LOG ACTIVITY -->
     <div class="card">
-      <div class="card-title">Log Activity</div>
-      <div class="month-selector">
-        <span class="month-selector-label">Assign to Month:</span>
-        <select class="field" id="family-month"></select>
+      <div class="card-title">Log Family Activity</div>
+      <div class="card-label">Date</div>
+      <div class="date-row">
+        <input type="date" id="family-log-date" class="field-date">
+        <div class="date-quick" onclick="setToday('family-log-date')">Today</div>
       </div>
-      <div class="card-label">Activity</div>
-      <input type="text" id="family-activity" placeholder="e.g., Dinner with family">
-      <div class="card-label" style="margin-top:12px">Category</div>
+
+      <div class="card-label">Family Members Involved</div>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:8px;letter-spacing:.5px;">Type a name and press Enter or click Add to include them.</p>
+      <div id="family-members-tags" class="member-tags"></div>
+      <div class="member-input-row">
+        <input type="text" id="family-member-input" placeholder="e.g. Sarah, Dad, Grandma…" onkeydown="if(event.key==='Enter'){event.preventDefault();addFamilyMember();}">
+        <button class="btn btn-sm" onclick="addFamilyMember()">Add</button>
+      </div>
+
+      <div class="card-label" style="margin-top:14px">Activity / Engagement</div>
+      <input type="text" id="family-activity" placeholder="e.g. Dinner, Prayer time, Phone call…">
+
+      <div class="card-label">Category</div>
       <select class="field" id="family-cat">
         <option>Quality Time</option>
-        <option>Support</option>
+        <option>Prayer Together</option>
         <option>Celebration</option>
+        <option>Support & Help</option>
         <option>Communication</option>
-        <option>Help</option>
+        <option>Recreation</option>
+        <option>Education Together</option>
+        <option>Other</option>
       </select>
-      <div class="card-label" style="margin-top:12px">Notes</div>
-      <textarea id="family-notes" placeholder="Who, what, how it went..."></textarea>
-      <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="logFamily()">Log Activity</button>
+
+      <div class="card-label">Notes</div>
+      <textarea id="family-notes" placeholder="How did it go? What impact did it have?"></textarea>
+      <button class="btn btn-gold btn-sm" style="margin-top:12px" onclick="logFamily()">Log Activity</button>
     </div>
 
     <div class="card">
@@ -309,60 +570,74 @@
     </div>
 
     <div class="card">
-      <div class="card-title" style="justify-content:space-between">
-        <span>📈 Insights</span>
-        <button class="btn btn-sm" onclick="generateFamilyReport()">Generate Report</button>
+      <div class="card-title">
+        <span>Insights & Report</span>
+        <button class="btn btn-sm" onclick="generateFamilyReport()">Generate</button>
       </div>
       <div id="family-report"></div>
     </div>
-
-    <div class="card">
-      <div class="card-title">📊 Month Comparison</div>
-      <div class="card-label">Select Month to View:</div>
-      <select class="field" id="family-compare-month" style="margin-bottom:12px" onchange="generateFamilyMonthComparison()"></select>
-      <div id="family-month-comparison"></div>
-    </div>
   </div>
 
-  <!-- FINANCE -->
+  <!-- ====== FINANCE ====== -->
   <div id="finance" class="section">
-    <h2 class="section-title"><span>💰</span>Financial Health</h2>
-    <p class="section-desc">Track spending, saving, and financial progress.</p>
+    <div class="section-header">
+      <div class="section-eyebrow">Pillar Three</div>
+      <h2 class="section-title"><span>💰</span> Financial Health</h2>
+      <p class="section-desc">Steward your resources wisely — spend, save, invest with purpose.</p>
+    </div>
+    <div class="quick-links" id="finance-links"></div>
 
-    <div class="card">
-      <div class="card-title">Monthly Goals</div>
-      <textarea id="finance-goals" placeholder="What are your financial goals this month?"></textarea>
-      <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="saveFinanceGoals()">Save Goals</button>
+    <div class="card card-accent">
+      <div class="card-title">Goals & Daily Tasks</div>
+      <div class="goal-form">
+        <input type="text" id="finance-goal-input" placeholder="Add a financial goal or task…" onkeydown="if(event.key==='Enter')addGoal('finance')">
+        <div class="goal-form-row">
+          <input type="date" id="finance-goal-date" class="field-date" style="flex:1">
+          <div class="goal-priority" id="finance-goal-priority">
+            <div class="priority-dot high" title="High" onclick="selectPriority('finance','high',this)"></div>
+            <div class="priority-dot med selected" title="Medium" onclick="selectPriority('finance','med',this)"></div>
+            <div class="priority-dot low" title="Low" onclick="selectPriority('finance','low',this)"></div>
+          </div>
+          <button class="btn btn-gold btn-sm" onclick="addGoal('finance')">+ Add</button>
+        </div>
+      </div>
+      <div id="finance-goals-list"></div>
     </div>
 
     <div class="card">
       <div class="card-title">Log Transaction</div>
-      <div class="month-selector">
-        <span class="month-selector-label">Assign to Month:</span>
-        <select class="field" id="finance-month"></select>
+      <div class="card-label">Date</div>
+      <div class="date-row">
+        <input type="date" id="finance-log-date" class="field-date">
+        <div class="date-quick" onclick="setToday('finance-log-date')">Today</div>
       </div>
       <div class="card-label">Description</div>
-      <input type="text" id="fin-desc" placeholder="e.g., Grocery shopping">
-      <div class="card-label" style="margin-top:12px">Amount</div>
-      <input type="number" id="fin-amount" placeholder="0" min="0" step="0.01">
-      <div class="card-label" style="margin-top:12px">Type</div>
+      <input type="text" id="fin-desc" placeholder="e.g. Grocery shopping, Salary received">
+      <div class="card-label">Amount (FCFA)</div>
+      <input type="number" id="fin-amount" placeholder="0" min="0" step="100">
+      <div class="card-label">Type</div>
       <select class="field" id="fin-type">
         <option>Expense</option>
         <option>Income</option>
-        <option>Saving</option>
+        <option>Savings</option>
         <option>Investment</option>
+        <option>Tithe / Offering</option>
       </select>
-      <div class="card-label" style="margin-top:12px">Category</div>
+      <div class="card-label">Category</div>
       <select class="field" id="fin-cat">
-        <option>Food</option>
+        <option>Food & Groceries</option>
         <option>Transport</option>
         <option>Utilities</option>
-        <option>Entertainment</option>
+        <option>Housing</option>
         <option>Healthcare</option>
         <option>Education</option>
+        <option>Clothing</option>
+        <option>Entertainment</option>
+        <option>Business</option>
+        <option>Giving</option>
         <option>Other</option>
       </select>
-      <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="logFinance()">Log Transaction</button>
+      <button class="btn btn-gold btn-sm" style="margin-top:12px" onclick="logFinance()">Log Transaction</button>
     </div>
 
     <div class="card">
@@ -371,52 +646,64 @@
     </div>
 
     <div class="card">
-      <div class="card-title" style="justify-content:space-between">
-        <span>📈 Insights</span>
-        <button class="btn btn-sm" onclick="generateFinanceReport()">Generate Report</button>
+      <div class="card-title">
+        <span>Insights & Report</span>
+        <button class="btn btn-sm" onclick="generateFinanceReport()">Generate</button>
       </div>
       <div id="finance-report"></div>
     </div>
-
-    <div class="card">
-      <div class="card-title">📊 Month Comparison</div>
-      <div class="card-label">Select Month to View:</div>
-      <select class="field" id="finance-compare-month" style="margin-bottom:12px" onchange="generateFinanceMonthComparison()"></select>
-      <div id="finance-month-comparison"></div>
-    </div>
   </div>
 
-  <!-- PHYSICAL -->
+  <!-- ====== PHYSICAL ====== -->
   <div id="physical" class="section">
-    <h2 class="section-title"><span>💪</span>Physical Health</h2>
-    <p class="section-desc">Track workouts, nutrition, sleep, and wellness.</p>
+    <div class="section-header">
+      <div class="section-eyebrow">Pillar Four</div>
+      <h2 class="section-title"><span>💪</span> Physical Health</h2>
+      <p class="section-desc">Honor your body — exercise, rest, nutrition, and wellness.</p>
+    </div>
+    <div class="quick-links" id="physical-links"></div>
 
-    <div class="card">
-      <div class="card-title">Monthly Goals</div>
-      <textarea id="physical-goals" placeholder="What are your fitness goals this month?"></textarea>
-      <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="savePhysicalGoals()">Save Goals</button>
+    <div class="card card-accent">
+      <div class="card-title">Goals & Daily Tasks</div>
+      <div class="goal-form">
+        <input type="text" id="physical-goal-input" placeholder="Add a health goal or task…" onkeydown="if(event.key==='Enter')addGoal('physical')">
+        <div class="goal-form-row">
+          <input type="date" id="physical-goal-date" class="field-date" style="flex:1">
+          <div class="goal-priority" id="physical-goal-priority">
+            <div class="priority-dot high" title="High" onclick="selectPriority('physical','high',this)"></div>
+            <div class="priority-dot med selected" title="Medium" onclick="selectPriority('physical','med',this)"></div>
+            <div class="priority-dot low" title="Low" onclick="selectPriority('physical','low',this)"></div>
+          </div>
+          <button class="btn btn-gold btn-sm" onclick="addGoal('physical')">+ Add</button>
+        </div>
+      </div>
+      <div id="physical-goals-list"></div>
     </div>
 
     <div class="card">
       <div class="card-title">Log Activity</div>
-      <div class="month-selector">
-        <span class="month-selector-label">Assign to Month:</span>
-        <select class="field" id="physical-month"></select>
+      <div class="card-label">Date</div>
+      <div class="date-row">
+        <input type="date" id="physical-log-date" class="field-date">
+        <div class="date-quick" onclick="setToday('physical-log-date')">Today</div>
       </div>
       <div class="card-label">Activity Type</div>
       <select class="field" id="phys-type">
-        <option>Exercise</option>
+        <option>Exercise / Workout</option>
+        <option>Walking / Running</option>
         <option>Sleep</option>
-        <option>Nutrition</option>
+        <option>Nutrition / Diet</option>
         <option>Hydration</option>
-        <option>Stretching</option>
+        <option>Stretching / Yoga</option>
+        <option>Medical Check-up</option>
+        <option>Rest / Recovery</option>
         <option>Other</option>
       </select>
-      <div class="card-label" style="margin-top:12px">Duration/Amount</div>
-      <input type="text" id="phys-amount" placeholder="e.g., 30 min, 8 glasses">
-      <div class="card-label" style="margin-top:12px">Notes</div>
-      <textarea id="phys-notes" placeholder="Details..."></textarea>
-      <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="logPhysical()">Log Activity</button>
+      <div class="card-label">Duration / Amount</div>
+      <input type="text" id="phys-amount" placeholder="e.g. 45 min, 8 glasses, 7 hrs">
+      <div class="card-label">Notes</div>
+      <textarea id="phys-notes" placeholder="How did it go?"></textarea>
+      <button class="btn btn-gold btn-sm" style="margin-top:12px" onclick="logPhysical()">Log Activity</button>
     </div>
 
     <div class="card">
@@ -425,54 +712,64 @@
     </div>
 
     <div class="card">
-      <div class="card-title" style="justify-content:space-between">
-        <span>📈 Insights</span>
-        <button class="btn btn-sm" onclick="generatePhysicalReport()">Generate Report</button>
+      <div class="card-title">
+        <span>Insights & Report</span>
+        <button class="btn btn-sm" onclick="generatePhysicalReport()">Generate</button>
       </div>
       <div id="physical-report"></div>
     </div>
-
-    <div class="card">
-      <div class="card-title">📊 Month Comparison</div>
-      <div class="card-label">Select Month to View:</div>
-      <select class="field" id="physical-compare-month" style="margin-bottom:12px" onchange="generatePhysicalMonthComparison()"></select>
-      <div id="physical-month-comparison"></div>
-    </div>
   </div>
 
-  <!-- EDUCATION -->
+  <!-- ====== EDUCATION ====== -->
   <div id="edu" class="section">
-    <h2 class="section-title"><span>📚</span>Education & Learning</h2>
-    <p class="section-desc">Track learning progress, courses, and skill development.</p>
+    <div class="section-header">
+      <div class="section-eyebrow">Pillar Five</div>
+      <h2 class="section-title"><span>📚</span> Education & Learning</h2>
+      <p class="section-desc">Commit to lifelong growth — read, study, and develop your skills daily.</p>
+    </div>
+    <div class="quick-links" id="edu-links"></div>
 
-    <div class="card">
-      <div class="card-title">Monthly Goals</div>
-      <textarea id="edu-goals" placeholder="What do you want to learn this month?"></textarea>
-      <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="saveEduGoals()">Save Goals</button>
+    <div class="card card-accent">
+      <div class="card-title">Goals & Daily Tasks</div>
+      <div class="goal-form">
+        <input type="text" id="edu-goal-input" placeholder="Add a learning goal or task…" onkeydown="if(event.key==='Enter')addGoal('edu')">
+        <div class="goal-form-row">
+          <input type="date" id="edu-goal-date" class="field-date" style="flex:1">
+          <div class="goal-priority" id="edu-goal-priority">
+            <div class="priority-dot high" title="High" onclick="selectPriority('edu','high',this)"></div>
+            <div class="priority-dot med selected" title="Medium" onclick="selectPriority('edu','med',this)"></div>
+            <div class="priority-dot low" title="Low" onclick="selectPriority('edu','low',this)"></div>
+          </div>
+          <button class="btn btn-gold btn-sm" onclick="addGoal('edu')">+ Add</button>
+        </div>
+      </div>
+      <div id="edu-goals-list"></div>
     </div>
 
     <div class="card">
       <div class="card-title">Log Learning</div>
-      <div class="month-selector">
-        <span class="month-selector-label">Assign to Month:</span>
-        <select class="field" id="edu-month"></select>
+      <div class="card-label">Date</div>
+      <div class="date-row">
+        <input type="date" id="edu-log-date" class="field-date">
+        <div class="date-quick" onclick="setToday('edu-log-date')">Today</div>
       </div>
-      <div class="card-label">Topic</div>
-      <input type="text" id="edu-topic" placeholder="What did you learn?">
-      <div class="card-label" style="margin-top:12px">Time Spent (minutes)</div>
+      <div class="card-label">Topic / Subject</div>
+      <input type="text" id="edu-topic" placeholder="What did you study or learn?">
+      <div class="card-label">Time Spent (minutes)</div>
       <input type="number" id="edu-time" placeholder="0" min="0">
-      <div class="card-label" style="margin-top:12px">Type</div>
+      <div class="card-label">Type</div>
       <select class="field" id="edu-type">
         <option>Reading</option>
-        <option>Video</option>
-        <option>Course</option>
-        <option>Practice</option>
-        <option>Discussion</option>
+        <option>Video / Online Course</option>
+        <option>Classroom / Training</option>
+        <option>Practice / Application</option>
+        <option>Research</option>
+        <option>Discussion / Mentoring</option>
         <option>Other</option>
       </select>
-      <div class="card-label" style="margin-top:12px">Notes</div>
-      <textarea id="edu-notes" placeholder="Key takeaways..."></textarea>
-      <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="logEdu()">Log Learning</button>
+      <div class="card-label">Key Takeaways</div>
+      <textarea id="edu-notes" placeholder="What did you learn? How will you apply it?"></textarea>
+      <button class="btn btn-gold btn-sm" style="margin-top:12px" onclick="logEdu()">Log Learning</button>
     </div>
 
     <div class="card">
@@ -481,125 +778,157 @@
     </div>
 
     <div class="card">
-      <div class="card-title" style="justify-content:space-between">
-        <span>📈 Insights</span>
-        <button class="btn btn-sm" onclick="generateEduReport()">Generate Report</button>
+      <div class="card-title">
+        <span>Insights & Report</span>
+        <button class="btn btn-sm" onclick="generateEduReport()">Generate</button>
       </div>
       <div id="edu-report"></div>
     </div>
-
-    <div class="card">
-      <div class="card-title">📊 Month Comparison</div>
-      <div class="card-label">Select Month to View:</div>
-      <select class="field" id="edu-compare-month" style="margin-bottom:12px" onchange="generateEduMonthComparison()"></select>
-      <div id="edu-month-comparison"></div>
-    </div>
   </div>
 
-  <!-- PROFESSIONAL -->
+  <!-- ====== PROFESSIONAL ====== -->
   <div id="pro" class="section">
-    <h2 class="section-title"><span>🚀</span>Professional Growth</h2>
-    <p class="section-desc">Track career achievements, projects, and professional development.</p>
-
-    <div class="card">
-      <div class="card-title">Monthly Goals</div>
-      <textarea id="pro-goals" placeholder="What are your career goals this month?"></textarea>
-      <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="saveProGoals()">Save Goals</button>
+    <div class="section-header">
+      <div class="section-eyebrow">Pillar Six</div>
+      <h2 class="section-title"><span>🚀</span> Professional Growth</h2>
+      <p class="section-desc">Achieve with excellence — lead, create, and advance your career with purpose.</p>
     </div>
+    <div class="quick-links" id="pro-links"></div>
 
-    <div class="card">
-      <div class="card-title">Log Activity</div>
-      <div class="month-selector">
-        <span class="month-selector-label">Assign to Month:</span>
-        <select class="field" id="pro-month"></select>
+    <div class="card card-accent">
+      <div class="card-title">Goals & Daily Tasks</div>
+      <div class="goal-form">
+        <input type="text" id="pro-goal-input" placeholder="Add a career goal or task…" onkeydown="if(event.key==='Enter')addGoal('pro')">
+        <div class="goal-form-row">
+          <input type="date" id="pro-goal-date" class="field-date" style="flex:1">
+          <div class="goal-priority" id="pro-goal-priority">
+            <div class="priority-dot high" title="High" onclick="selectPriority('pro','high',this)"></div>
+            <div class="priority-dot med selected" title="Medium" onclick="selectPriority('pro','med',this)"></div>
+            <div class="priority-dot low" title="Low" onclick="selectPriority('pro','low',this)"></div>
+          </div>
+          <button class="btn btn-gold btn-sm" onclick="addGoal('pro')">+ Add</button>
+        </div>
       </div>
-      <div class="card-label">Activity</div>
-      <input type="text" id="pro-activity" placeholder="e.g., Completed project, Led meeting">
-      <div class="card-label" style="margin-top:12px">Category</div>
-      <select class="field" id="pro-cat">
-        <option>Achievement</option>
-        <option>Project</option>
-        <option>Leadership</option>
-        <option>Learning</option>
-        <option>Collaboration</option>
-      </select>
-      <div class="card-label" style="margin-top:12px">Notes</div>
-      <textarea id="pro-notes" placeholder="Details and impact..."></textarea>
-      <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="logPro()">Log Activity</button>
+      <div id="pro-goals-list"></div>
     </div>
 
     <div class="card">
-      <div class="card-title">Recent Activities</div>
+      <div class="card-title">Log Achievement</div>
+      <div class="card-label">Date</div>
+      <div class="date-row">
+        <input type="date" id="pro-log-date" class="field-date">
+        <div class="date-quick" onclick="setToday('pro-log-date')">Today</div>
+      </div>
+      <div class="card-label">Activity / Achievement</div>
+      <input type="text" id="pro-activity" placeholder="e.g. Completed project, Led training, Closed deal">
+      <div class="card-label">Category</div>
+      <select class="field" id="pro-cat">
+        <option>Achievement / Win</option>
+        <option>Project Milestone</option>
+        <option>Leadership</option>
+        <option>Training / Development</option>
+        <option>Networking</option>
+        <option>Collaboration</option>
+        <option>Business Development</option>
+        <option>Other</option>
+      </select>
+      <div class="card-label">Notes & Impact</div>
+      <textarea id="pro-notes" placeholder="Details, outcomes, and what you learned…"></textarea>
+      <button class="btn btn-gold btn-sm" style="margin-top:12px" onclick="logPro()">Log Achievement</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Recent Activity</div>
       <div id="pro-log-list"></div>
     </div>
 
     <div class="card">
-      <div class="card-title" style="justify-content:space-between">
-        <span>📈 Insights</span>
-        <button class="btn btn-sm" onclick="generateProReport()">Generate Report</button>
+      <div class="card-title">
+        <span>Insights & Report</span>
+        <button class="btn btn-sm" onclick="generateProReport()">Generate</button>
       </div>
       <div id="pro-report"></div>
     </div>
-
-    <div class="card">
-      <div class="card-title">📊 Month Comparison</div>
-      <div class="card-label">Select Month to View:</div>
-      <select class="field" id="pro-compare-month" style="margin-bottom:12px" onchange="generateProMonthComparison()"></select>
-      <div id="pro-month-comparison"></div>
-    </div>
   </div>
 
-  <!-- SOCIAL -->
+  <!-- ====== SOCIAL ====== -->
   <div id="social" class="section">
-    <h2 class="section-title"><span>🌍</span>Social Impact & Community</h2>
-    <p class="section-desc">Track community involvement, relationships, and social contribution.</p>
+    <div class="section-header">
+      <div class="section-eyebrow">Pillar Seven</div>
+      <h2 class="section-title"><span>🌍</span> Social Impact & Community</h2>
+      <p class="section-desc">Be a blessing — serve, contribute, and make a lasting difference.</p>
+    </div>
+    <div class="quick-links" id="social-links"></div>
 
-    <div class="card">
-      <div class="card-title">Monthly Goals</div>
-      <textarea id="social-goals" placeholder="What is your social impact goal this month?"></textarea>
-      <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="saveSocialGoals()">Save Goals</button>
+    <div class="card card-accent">
+      <div class="card-title">Goals & Daily Tasks</div>
+      <div class="goal-form">
+        <input type="text" id="social-goal-input" placeholder="Add a community goal or task…" onkeydown="if(event.key==='Enter')addGoal('social')">
+        <div class="goal-form-row">
+          <input type="date" id="social-goal-date" class="field-date" style="flex:1">
+          <div class="goal-priority" id="social-goal-priority">
+            <div class="priority-dot high" title="High" onclick="selectPriority('social','high',this)"></div>
+            <div class="priority-dot med selected" title="Medium" onclick="selectPriority('social','med',this)"></div>
+            <div class="priority-dot low" title="Low" onclick="selectPriority('social','low',this)"></div>
+          </div>
+          <button class="btn btn-gold btn-sm" onclick="addGoal('social')">+ Add</button>
+        </div>
+      </div>
+      <div id="social-goals-list"></div>
     </div>
 
     <div class="card">
       <div class="card-title">Log Activity</div>
-      <div class="month-selector">
-        <span class="month-selector-label">Assign to Month:</span>
-        <select class="field" id="social-month"></select>
+      <div class="card-label">Date</div>
+      <div class="date-row">
+        <input type="date" id="social-log-date" class="field-date">
+        <div class="date-quick" onclick="setToday('social-log-date')">Today</div>
       </div>
       <div class="card-label">Activity</div>
-      <input type="text" id="soc-activity" placeholder="e.g., Volunteered at shelter">
-      <div class="card-label" style="margin-top:12px">Category</div>
+      <input type="text" id="soc-activity" placeholder="e.g. Volunteered at shelter, Mentored student">
+      <div class="card-label">Category</div>
       <select class="field" id="soc-cat">
         <option>Volunteering</option>
-        <option>Community</option>
         <option>Mentoring</option>
-        <option>Support</option>
+        <option>Community Service</option>
         <option>Advocacy</option>
+        <option>Outreach</option>
+        <option>Donation / Giving</option>
+        <option>Other</option>
       </select>
-      <div class="card-label" style="margin-top:12px">Notes</div>
-      <textarea id="soc-notes" placeholder="What you did and impact..."></textarea>
-      <button class="btn btn-accent btn-sm" style="margin-top:10px" onclick="logSocial()">Log Activity</button>
+      <div class="card-label">Notes & Impact</div>
+      <textarea id="soc-notes" placeholder="What impact did you make?"></textarea>
+      <button class="btn btn-gold btn-sm" style="margin-top:12px" onclick="logSocial()">Log Activity</button>
     </div>
 
     <div class="card">
-      <div class="card-title">Recent Activities</div>
+      <div class="card-title">Recent Activity</div>
       <div id="soc-log-list"></div>
     </div>
 
     <div class="card">
-      <div class="card-title" style="justify-content:space-between">
-        <span>📈 Insights</span>
-        <button class="btn btn-sm" onclick="generateSocialReport()">Generate Report</button>
+      <div class="card-title">
+        <span>Insights & Report</span>
+        <button class="btn btn-sm" onclick="generateSocialReport()">Generate</button>
       </div>
       <div id="social-report"></div>
     </div>
+  </div>
+</div>
 
-    <div class="card">
-      <div class="card-title">📊 Month Comparison</div>
-      <div class="card-label">Select Month to View:</div>
-      <select class="field" id="social-compare-month" style="margin-bottom:12px" onchange="generateSocialMonthComparison()"></select>
-      <div id="social-month-comparison"></div>
+<!-- REPORT MODAL -->
+<div id="report-modal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeReportModal()">×</span>
+    <div class="modal-eyebrow">Wholeness Assessment</div>
+    <h2 class="modal-title">Progress Report</h2>
+    <div class="card-label">Date Range</div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <input type="date" id="report-from" class="field-date" style="flex:1">
+      <input type="date" id="report-to" class="field-date" style="flex:1">
     </div>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;margin-bottom:16px" onclick="generateFullReport()">Generate Full Report</button>
+    <div id="full-report-output"></div>
   </div>
 </div>
 
@@ -607,936 +936,633 @@
 <div id="export-modal" class="modal">
   <div class="modal-content">
     <span class="modal-close" onclick="toggleExportModal()">×</span>
-    <h2 class="modal-title">Export Data</h2>
-    <p style="color: var(--muted); margin-bottom: 16px;">Choose what to export:</p>
-    <div class="export-option"><label><input type="checkbox" id="export-all" checked> All Data (Complete History)</label></div>
+    <div class="modal-eyebrow">Data Export</div>
+    <h2 class="modal-title">Export Your Data</h2>
+    <p style="color:var(--muted2);margin-bottom:16px;font-size:12px;letter-spacing:.5px;">Select which pillars to include in your export.</p>
+    <div class="export-option"><label><input type="checkbox" id="export-all" checked onchange="toggleAllExport(this)"> All Pillars (Complete History)</label></div>
+    <div class="divider"></div>
     <div class="export-option"><label><input type="checkbox" id="export-spirit"> 🧘 Spiritual Wellbeing</label></div>
     <div class="export-option"><label><input type="checkbox" id="export-family"> 👨‍👩‍👧 Family Connections</label></div>
     <div class="export-option"><label><input type="checkbox" id="export-finance"> 💰 Financial Health</label></div>
     <div class="export-option"><label><input type="checkbox" id="export-physical"> 💪 Physical Health</label></div>
-    <div class="export-option"><label><input type="checkbox" id="export-edu"> 📚 Education</label></div>
-    <div class="export-option"><label><input type="checkbox" id="export-pro"> 🚀 Professional</label></div>
-    <div class="export-option"><label><input type="checkbox" id="export-social"> 🌍 Social</label></div>
-    <button class="btn btn-accent" style="width:100%; margin-top:16px; justify-content:center" onclick="exportToExcel()">📥 Export to Excel</button>
+    <div class="export-option"><label><input type="checkbox" id="export-edu"> 📚 Education & Learning</label></div>
+    <div class="export-option"><label><input type="checkbox" id="export-pro"> 🚀 Professional Growth</label></div>
+    <div class="export-option"><label><input type="checkbox" id="export-social"> 🌍 Social Impact</label></div>
+    <button class="btn btn-gold" style="width:100%;margin-top:18px;justify-content:center" onclick="exportData()">↓ Export to CSV</button>
+  </div>
+</div>
+
+<!-- BIBLE VERSE BAR -->
+<div id="verse-bar">
+  <div class="verse-icon">✦</div>
+  <div class="verse-ticker-wrap">
+    <div class="verse-text" id="verse-display"></div>
   </div>
 </div>
 
 <script>
 // ============================================================
-// STORAGE & UTILITIES
+// DATA
 // ============================================================
 let USER_NAME = '';
+const PILLARS = ['spirit','family','finance','physical','edu','pro','social'];
+const PILLAR_META = {
+  spirit:   {label:'Spirit',     icon:'🧘', color:'var(--accent-spirit)'},
+  family:   {label:'Family',     icon:'👨‍👩‍👧', color:'var(--accent-family)'},
+  finance:  {label:'Finance',    icon:'💰', color:'var(--accent-finance)'},
+  physical: {label:'Physical',   icon:'💪', color:'var(--accent-physical)'},
+  edu:      {label:'Education',  icon:'📚', color:'var(--accent-edu)'},
+  pro:      {label:'Professional',icon:'🚀',color:'var(--accent-pro)'},
+  social:   {label:'Social',     icon:'🌍', color:'var(--accent-social)'},
+};
+const BIBLE_VERSES = [
+  '"I can do all things through Christ who strengthens me." — Phil 4:13',
+  '"For I know the plans I have for you, plans to prosper you and not to harm you." — Jer 29:11',
+  '"Commit to the LORD whatever you do, and he will establish your plans." — Prov 16:3',
+  '"Trust in the LORD with all your heart and lean not on your own understanding." — Prov 3:5',
+  '"Be strong and courageous. Do not be afraid; do not be discouraged." — Josh 1:9',
+  '"She is clothed with strength and dignity; she can laugh at the days to come." — Prov 31:25',
+  '"But seek first his kingdom and his righteousness, and all these things will be given." — Matt 6:33',
+  '"The LORD is my shepherd; I shall not want." — Psalm 23:1',
+  '"And we know that in all things God works for the good of those who love him." — Rom 8:28',
+  '"Let your light shine before others, that they may see your good deeds." — Matt 5:16',
+  '"Do not be anxious about anything, but in every situation, by prayer, present your requests to God." — Phil 4:6',
+  '"For God gave us a spirit not of fear but of power and love and self-control." — 2 Tim 1:7',
+  '"The blessing of the LORD brings wealth, without painful toil for it." — Prov 10:22',
+  '"Blessed is the one who does not walk in step with the wicked." — Psalm 1:1',
+  '"Whatever you do, work at it with all your heart, as working for the Lord." — Col 3:23',
+  '"The LORD your God is with you, the Mighty Warrior who saves." — Zeph 3:17',
+  '"Give, and it will be given to you. A good measure, pressed down." — Luke 6:38',
+  '"Beloved, I pray that you may prosper in all things and be in health." — 3 John 1:2',
+  '"No weapon formed against you shall prosper." — Isa 54:17',
+  '"Cast all your anxiety on him because he cares for you." — 1 Pet 5:7',
+  '"The righteous person may have many troubles, but the LORD delivers him from them all." — Psalm 34:19',
+  '"Plans fail for lack of counsel, but with many advisers they succeed." — Prov 15:22',
+];
 
-function getStorageKey(key) {
-  return `wholeness_${USER_NAME}_${key}`;
-}
-
-function set(key, value) {
-  try {
-    localStorage.setItem(getStorageKey(key), JSON.stringify(value));
-  } catch(e) {
-    console.error('Storage error:', e);
-  }
-}
-
-function get(key, defaultVal) {
-  try {
-    const val = localStorage.getItem(getStorageKey(key));
-    return val ? JSON.parse(val) : defaultVal;
-  } catch(e) {
-    return defaultVal;
-  }
-}
-
-function push(key, value) {
-  const arr = get(key, []);
-  arr.push(value);
-  set(key, arr);
-}
-
-function getAllUserData() {
-  const allData = {};
-  const keys = ['spirit.log', 'spirit.goals', 'family.log', 'family.goals', 'finance.log', 'finance.goals',
-                'physical.log', 'physical.goals', 'edu.log', 'edu.goals', 'pro.log', 'pro.goals', 'social.log', 'social.goals'];
-  keys.forEach(k => {
-    const fullKey = getStorageKey(k);
-    const val = localStorage.getItem(fullKey);
-    if(val) allData[k] = JSON.parse(val);
-  });
-  return allData;
-}
+let verseIndex = 0;
+let currentFamilyMembers = [];
+let priorities = { spirit:'med', family:'med', finance:'med', physical:'med', edu:'med', pro:'med', social:'med' };
 
 // ============================================================
-// MONTH UTILITIES
+// STORAGE
 // ============================================================
-function generateMonthOptions() {
-  const months = [];
-  // Start from April 2026, go through December 2028
-  const startDate = new Date(2026, 3, 1); // April 2026 (month 3 = April)
-  const endDate = new Date(2028, 11, 31); // December 2028
-  
-  let current = new Date(startDate);
-  while(current <= endDate) {
-    const year = current.getFullYear();
-    const month = current.toLocaleDateString('en-US', { month: 'long' });
-    const key = `${year}-${String(current.getMonth() + 1).padStart(2, '0')}`;
-    months.push({ label: `${month} ${year}`, key, date: new Date(year, current.getMonth(), 1) });
-    current.setMonth(current.getMonth() + 1);
-  }
-  
-  return months;
-}
-
-function getDateFromMonth(monthKey) {
-  if(!monthKey) return new Date();
-  const [year, month] = monthKey.split('-').map(Number);
-  return new Date(year, month - 1, 1);
-}
-
-function getMonthData(logArray, monthKey) {
-  const [year, month] = monthKey.split('-').map(Number);
-  return logArray.filter(e => {
-    const d = new Date(e.date);
-    return d.getFullYear() === year && d.getMonth() === month - 1;
-  });
-}
-
-function populateMonthSelectors() {
-  const months = generateMonthOptions();
-  const selectors = ['spirit-month', 'family-month', 'finance-month', 'physical-month', 'edu-month', 'pro-month', 'social-month'];
-  const today = new Date();
-  let currentMonthKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
-  
-  // If today is outside the April 2026 - December 2028 range, use the closest month
-  const availableKeys = months.map(m => m.key);
-  if(!availableKeys.includes(currentMonthKey)) {
-    // If today is before April 2026, default to April 2026
-    // If today is after December 2028, default to December 2028
-    currentMonthKey = availableKeys[0]; // Default to first available month
-  }
-  
-  selectors.forEach(id => {
-    const select = document.getElementById(id);
-    if(!select) return;
-    select.innerHTML = months.map(m => `<option value="${m.key}" ${m.key === currentMonthKey ? 'selected' : ''}>${m.label}</option>`).join('');
-  });
-}
-
-function populateMonthComparisonSelectors() {
-  const months = generateMonthOptions();
-  const selectors = ['spirit-compare-month', 'family-compare-month', 'finance-compare-month', 'physical-compare-month', 'edu-compare-month', 'pro-compare-month', 'social-compare-month'];
-  const today = new Date();
-  let currentMonthKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
-  
-  // If today is outside the April 2026 - December 2028 range, use the closest month
-  const availableKeys = months.map(m => m.key);
-  if(!availableKeys.includes(currentMonthKey)) {
-    currentMonthKey = availableKeys[0]; // Default to first available month
-  }
-  
-  selectors.forEach(id => {
-    const select = document.getElementById(id);
-    if(!select) return;
-    select.innerHTML = months.map(m => `<option value="${m.key}" ${m.key === currentMonthKey ? 'selected' : ''}>${m.label}</option>`).join('');
-  });
-}
+function key(k){ return `whn_${USER_NAME}_${k}`; }
+function set(k,v){ try{localStorage.setItem(key(k),JSON.stringify(v));}catch(e){} }
+function get(k,d){ try{const v=localStorage.getItem(key(k));return v?JSON.parse(v):d;}catch(e){return d;} }
+function push(k,v){ const a=get(k,[]); a.push(v); set(k,a); }
 
 // ============================================================
 // AUTH
 // ============================================================
-function handleLogin(e) {
+function handleLogin(e){
   e.preventDefault();
-  const username = document.getElementById('username').value.trim();
-  if(!username) { toast('Please enter a username'); return; }
-  USER_NAME = username;
-  localStorage.setItem(getStorageKey('user.name'), username);
+  const u = document.getElementById('username').value.trim();
+  if(!u){ toast('Please enter your name'); return; }
+  USER_NAME = u;
+  localStorage.setItem(`whn_${u}_user.name`, u);
   document.getElementById('splash').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   initApp();
 }
 
-function handleLogout() {
-  if(confirm('Are you sure you want to logout?')) {
-    USER_NAME = '';
-    document.getElementById('splash').style.display = 'flex';
-    document.getElementById('app').style.display = 'none';
-    document.getElementById('username').value = '';
-    toast('✅ Logged out. Your data is saved.');
-  }
+function handleLogout(){
+  if(!confirm('Log out? Your data remains saved.')) return;
+  USER_NAME = '';
+  document.getElementById('splash').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('username').value = '';
 }
 
 // ============================================================
 // INIT
 // ============================================================
-function initApp() {
-  populateMonthSelectors();
-  populateMonthComparisonSelectors();
+function initApp(){
   updateHeader();
-  updateDate();
   setInterval(updateDate, 1000);
-  
-  document.getElementById('spirit-goals').value = get('spirit.goals', '');
-  document.getElementById('family-goals').value = get('family.goals', '');
-  document.getElementById('finance-goals').value = get('finance.goals', '');
-  document.getElementById('physical-goals').value = get('physical.goals', '');
-  document.getElementById('edu-goals').value = get('edu.goals', '');
-  document.getElementById('pro-goals').value = get('pro.goals', '');
-  document.getElementById('social-goals').value = get('social.goals', '');
-  
-  renderSpiritLog();
-  renderFamilyLog();
-  renderFinanceLog();
-  renderPhysicalLog();
-  renderEduLog();
-  renderProLog();
-  renderSocLog();
+  setAllDatesToToday();
+  buildQuickLinks();
+  PILLARS.forEach(p => { renderGoals(p); renderLog(p); });
+  startVerseTicker();
 }
 
-function updateHeader() {
-  const name = USER_NAME || get('user.name', 'Guest');
-  document.getElementById('header-user').textContent = `👤 ${name}`;
+function updateHeader(){
+  document.getElementById('header-user').textContent = USER_NAME;
+  updateDate();
 }
 
-function updateDate() {
-  const now = new Date();
-  const opts = { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-  document.getElementById('header-date').textContent = now.toLocaleDateString('en-US', opts);
+function updateDate(){
+  const n = new Date();
+  const opts = {weekday:'short',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'};
+  document.getElementById('header-date').textContent = n.toLocaleDateString('en-US',opts);
 }
 
-function switchTab(tab) {
+function setAllDatesToToday(){
+  const today = new Date().toISOString().split('T')[0];
+  ['spirit','family','finance','physical','edu','pro','social'].forEach(p => {
+    const el = document.getElementById(p+'-log-date');
+    if(el) el.value = today;
+    const el2 = document.getElementById(p+'-goal-date');
+    if(el2) el2.value = today;
+  });
+}
+
+function setToday(id){
+  const el = document.getElementById(id);
+  if(el) el.value = new Date().toISOString().split('T')[0];
+}
+
+// ============================================================
+// TAB NAVIGATION
+// ============================================================
+function switchTab(tab, btn){
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(tab).classList.add('active');
-  event.target.closest('.nav-btn').classList.add('active');
-}
-
-function toast(msg) {
-  const el = document.createElement('div');
-  el.className = 'toast';
-  el.textContent = msg;
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 2500);
-}
-
-function toggleExportModal() {
-  document.getElementById('export-modal').classList.toggle('active');
-}
-
-// ============================================================
-// ANALYSIS
-// ============================================================
-function analyzeData(logArray) {
-  if(!logArray || logArray.length === 0) {
-    return { count: 0, thisMonth: 0, thisWeek: 0 };
+  if(btn) btn.classList.add('active');
+  else {
+    // Activate by tab name match
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      if(b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${tab}'`)) b.classList.add('active');
+    });
   }
+  window.scrollTo(0,0);
+}
 
-  const count = logArray.length;
-  const today = new Date();
-  const thisMonth = logArray.filter(e => {
-    const d = new Date(e.date);
-    return d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
+function buildQuickLinks(){
+  PILLARS.forEach(p => {
+    const el = document.getElementById(p+'-links');
+    if(!el) return;
+    const others = PILLARS.filter(x => x !== p);
+    el.innerHTML = others.map(o =>
+      `<div class="quick-link" onclick="switchTab('${o}',null)">${PILLAR_META[o].icon} ${PILLAR_META[o].label}</div>`
+    ).join('') + `<div class="quick-link" onclick="openReportModal()" style="color:var(--gold);border-color:var(--gold)">📊 Report</div>`;
   });
-  const thisWeek = logArray.filter(e => {
-    const d = new Date(e.date);
-    const diff = (today - d) / (1000*60*60*24);
-    return diff <= 7;
-  });
-
-  return { count, thisMonth: thisMonth.length, thisWeek: thisWeek.length };
 }
 
 // ============================================================
+// PRIORITY
+// ============================================================
+function selectPriority(pillar, level, el){
+  priorities[pillar] = level;
+  document.querySelectorAll(`#${pillar}-goal-priority .priority-dot`).forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ============================================================
+// GOALS / TASKS
+// ============================================================
+function addGoal(pillar){
+  const input = document.getElementById(pillar+'-goal-input');
+  const dateEl = document.getElementById(pillar+'-goal-date');
+  const text = input.value.trim();
+  if(!text){ toast('Please enter a goal or task'); return; }
+  const goal = {
+    id: Date.now(),
+    text,
+    date: dateEl.value || new Date().toISOString().split('T')[0],
+    priority: priorities[pillar],
+    done: false,
+    created: new Date().toISOString()
+  };
+  push(pillar+'.goals', goal);
+  input.value = '';
+  renderGoals(pillar);
+  toast('✦ Goal added');
+}
+
+function toggleGoal(pillar, id){
+  const goals = get(pillar+'.goals', []);
+  const g = goals.find(x => x.id === id);
+  if(g) g.done = !g.done;
+  set(pillar+'.goals', goals);
+  renderGoals(pillar);
+}
+
+function deleteGoal(pillar, id){
+  const goals = get(pillar+'.goals', []).filter(x => x.id !== id);
+  set(pillar+'.goals', goals);
+  renderGoals(pillar);
+}
+
+function renderGoals(pillar){
+  const goals = get(pillar+'.goals', []);
+  const el = document.getElementById(pillar+'-goals-list');
+  if(!el) return;
+  if(!goals.length){
+    el.innerHTML = '<p style="color:var(--muted);font-size:12px;letter-spacing:1px;padding:8px 0;">No goals yet. Add your first goal above.</p>';
+    return;
+  }
+  // Sort: incomplete first by date, then done
+  const sorted = [...goals].sort((a,b) => {
+    if(a.done !== b.done) return a.done ? 1 : -1;
+    return new Date(a.date) - new Date(b.date);
+  });
+  const prioColor = {high:'#f87171', med:'var(--gold)', low:'#34d399'};
+  el.innerHTML = sorted.map(g => `
+    <div class="goal-item">
+      <div class="goal-check ${g.done?'done':''}" onclick="toggleGoal('${pillar}',${g.id})"></div>
+      <div style="flex:1">
+        <div class="goal-text ${g.done?'done':''}">${g.text}</div>
+        <div class="goal-meta">
+          ${g.date} &nbsp;·&nbsp;
+          <span style="color:${prioColor[g.priority]||'var(--muted)'}">${(g.priority||'med').toUpperCase()} PRIORITY</span>
+          ${g.done ? '&nbsp;·&nbsp;<span style="color:#34d399">✓ DONE</span>' : ''}
+        </div>
+      </div>
+      <div class="goal-del" onclick="deleteGoal('${pillar}',${g.id})">×</div>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// FAMILY MEMBER TAGS
+// ============================================================
+function addFamilyMember(){
+  const input = document.getElementById('family-member-input');
+  const name = input.value.trim();
+  if(!name) return;
+  if(!currentFamilyMembers.includes(name)) currentFamilyMembers.push(name);
+  input.value = '';
+  renderMemberTags();
+}
+
+function removeFamilyMember(name){
+  currentFamilyMembers = currentFamilyMembers.filter(m => m !== name);
+  renderMemberTags();
+}
+
+function renderMemberTags(){
+  const el = document.getElementById('family-members-tags');
+  el.innerHTML = currentFamilyMembers.map(m =>
+    `<div class="member-tag">${m}<span class="member-tag-remove" onclick="removeFamilyMember('${m}')">×</span></div>`
+  ).join('');
+}
+
+// ============================================================
+// LOGGING
+// ============================================================
+function getLogDate(pillar){
+  const el = document.getElementById(pillar+'-log-date');
+  return el && el.value ? new Date(el.value+'T12:00:00').toISOString() : new Date().toISOString();
+}
+
+function renderLog(pillar){
+  const fns = {spirit:renderSpiritLog,family:renderFamilyLog,finance:renderFinanceLog,physical:renderPhysicalLog,edu:renderEduLog,pro:renderProLog,social:renderSocLog};
+  if(fns[pillar]) fns[pillar]();
+}
+
+function deleteLog(pillar, id){
+  const logs = get(pillar+'.log', []).filter(x => x.id !== id);
+  set(pillar+'.log', logs);
+  renderLog(pillar);
+}
+
+function logEntryHTML(e, pillar, title, desc){
+  return `<div class="log-entry">
+    <div style="flex:1">
+      <div class="log-title">${title}</div>
+      <div class="log-desc">${desc}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+      <div class="log-date">${new Date(e.date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}</div>
+      <div class="log-del" onclick="deleteLog('${pillar}',${e.id})">×</div>
+    </div>
+  </div>`;
+}
+
 // SPIRIT
-// ============================================================
-function saveSpiritGoals() { set('spirit.goals', document.getElementById('spirit-goals').value); toast('🧘 Goals saved!'); }
-function logSpirit() {
+function logSpirit(){
   const type = document.getElementById('spirit-type').value;
-  const time = parseInt(document.getElementById('spirit-time').value) || 0;
+  const time = parseInt(document.getElementById('spirit-time').value)||0;
   const notes = document.getElementById('spirit-notes').value.trim();
-  const monthKey = document.getElementById('spirit-month').value;
-  const selectedDate = getDateFromMonth(monthKey);
-  
-  if(!type) { toast('Select an activity type'); return; }
-  push('spirit.log', {type, time, notes, date: selectedDate.toISOString(), monthKey});
-  
-  document.getElementById('spirit-type').value = 'Meditation';
-  document.getElementById('spirit-time').value = '';
-  document.getElementById('spirit-notes').value = '';
-  
-  renderSpiritLog();
-  toast('🧘 Activity logged for ' + selectedDate.toLocaleDateString('en-US', {month: 'long', year: 'numeric'}));
+  push('spirit.log',{id:Date.now(),type,time,notes,date:getLogDate('spirit')});
+  document.getElementById('spirit-time').value='';
+  document.getElementById('spirit-notes').value='';
+  renderSpiritLog(); toast('🧘 Spiritual activity logged');
+}
+function renderSpiritLog(){
+  const log=get('spirit.log',[]).slice().reverse().slice(0,20);
+  const el=document.getElementById('spirit-log-list');
+  if(!el) return;
+  if(!log.length){el.innerHTML='<p style="color:var(--muted);font-size:12px;letter-spacing:1px">No activities logged yet.</p>';return;}
+  el.innerHTML=log.map(e=>logEntryHTML(e,'spirit',e.type,`${e.time||0} min${e.notes?' — '+e.notes:''}`)).join('');
 }
 
-function renderSpiritLog() {
-  const log = get('spirit.log', []).slice().reverse().slice(0, 15);
-  const el = document.getElementById('spirit-log-list');
-  
-  if(!log.length) { el.innerHTML = '<p style="color:var(--muted);font-size:13px">No activities logged yet.</p>'; return; }
-  el.innerHTML = log.map(e => `<div class="log-entry"><div><div style="font-weight:500">${e.type}</div><div class="log-desc">${e.time || 0} min${e.notes ? ' — ' + e.notes : ''}</div></div><div class="log-date">${new Date(e.date).toLocaleDateString()}</div></div>`).join('');
-}
-
-function generateSpiritReport() {
-  const log = get('spirit.log', []);
-  const goals = get('spirit.goals', 'None set');
-  const el = document.getElementById('spirit-report');
-  
-  const stats = analyzeData(log);
-  let totalTime = 0;
-  const typeCount = {};
-  
-  log.forEach(e => {
-    totalTime += e.time || 0;
-    typeCount[e.type] = (typeCount[e.type] || 0) + 1;
-  });
-
-  const topType = Object.keys(typeCount).sort((a,b) => typeCount[b] - typeCount[a])[0];
-  const average = stats.thisMonth > 0 ? (totalTime / stats.thisMonth).toFixed(1) : 0;
-
-  let html = '<div class="stats-grid">';
-  html += `<div class="stat-box"><div class="stat-value">${stats.count}</div><div class="stat-label">Total Sessions</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${stats.thisMonth}</div><div class="stat-label">This Month</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${stats.thisWeek}</div><div class="stat-label">This Week</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${totalTime}</div><div class="stat-label">Total Minutes</div></div>`;
-  html += '</div>';
-
-  html += '<div class="report-section">';
-  html += '<div class="report-stat"><div class="report-label">Monthly Goal</div><div class="report-value">' + (goals || 'Not set') + '</div></div>';
-  html += '<div class="report-stat"><div class="report-label">Most Common Practice</div><div class="report-value">' + (topType || 'N/A') + '</div></div>';
-  html += '<div class="report-stat"><div class="report-label">Avg. Duration (This Month)</div><div class="report-value">' + average + ' min</div></div>';
-  html += '</div>';
-
-  html += '<div class="report-insight">';
-  if(stats.thisMonth > 0) {
-    html += `✨ You\'ve completed ${stats.thisMonth} spiritual practice${stats.thisMonth !== 1 ? 's' : ''} this month, investing ${totalTime} minutes in your wellbeing.`;
-  } else {
-    html += '💡 Start logging your spiritual practices to build a habit and track your growth.';
-  }
-  html += '</div>';
-
-  el.innerHTML = html;
-}
-
-function generateSpiritMonthComparison() {
-  const log = get('spirit.log', []);
-  const monthKey = document.getElementById('spirit-compare-month').value;
-  const monthData = getMonthData(log, monthKey);
-  const el = document.getElementById('spirit-month-comparison');
-  
-  let totalTime = 0;
-  const typeCount = {};
-  
-  monthData.forEach(e => {
-    totalTime += e.time || 0;
-    typeCount[e.type] = (typeCount[e.type] || 0) + 1;
-  });
-
-  const topType = Object.keys(typeCount).sort((a,b) => typeCount[b] - typeCount[a])[0];
-  const average = monthData.length > 0 ? (totalTime / monthData.length).toFixed(1) : 0;
-
-  let html = '<div class="stats-grid">';
-  html += `<div class="stat-box"><div class="stat-value">${monthData.length}</div><div class="stat-label">Sessions</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${totalTime}</div><div class="stat-label">Minutes</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${average}</div><div class="stat-label">Avg/Session</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${topType || 'N/A'}</div><div class="stat-label">Top Type</div></div>`;
-  html += '</div>';
-
-  html += '<div class="report-insight">';
-  if(monthData.length > 0) {
-    html += `✨ In this month, you completed ${monthData.length} session${monthData.length !== 1 ? 's' : ''}, investing ${totalTime} minutes. Average session: ${average} minutes.`;
-  } else {
-    html += '📭 No activities logged for this month.';
-  }
-  html += '</div>';
-
-  el.innerHTML = html;
-}
-
-// ============================================================
 // FAMILY
-// ============================================================
-function saveFamilyGoals() { set('family.goals', document.getElementById('family-goals').value); toast('👨‍👩‍👧 Goals saved!'); }
-function logFamily() {
+function logFamily(){
   const activity = document.getElementById('family-activity').value.trim();
   const cat = document.getElementById('family-cat').value;
   const notes = document.getElementById('family-notes').value.trim();
-  const monthKey = document.getElementById('family-month').value;
-  const selectedDate = getDateFromMonth(monthKey);
-  
-  if(!activity) { toast('Enter an activity'); return; }
-  push('family.log', {activity, cat, notes, date: selectedDate.toISOString(), monthKey});
-  
-  document.getElementById('family-activity').value = '';
-  document.getElementById('family-notes').value = '';
-  
-  renderFamilyLog();
-  toast('👨‍👩‍👧 Activity logged for ' + selectedDate.toLocaleDateString('en-US', {month: 'long', year: 'numeric'}));
+  const members = [...currentFamilyMembers];
+  if(!activity){toast('Enter an activity');return;}
+  push('family.log',{id:Date.now(),activity,cat,members,notes,date:getLogDate('family')});
+  document.getElementById('family-activity').value='';
+  document.getElementById('family-notes').value='';
+  currentFamilyMembers=[];
+  renderMemberTags();
+  renderFamilyLog(); toast('👨‍👩‍👧 Family activity logged');
+}
+function renderFamilyLog(){
+  const log=get('family.log',[]).slice().reverse().slice(0,20);
+  const el=document.getElementById('family-log-list');
+  if(!el) return;
+  if(!log.length){el.innerHTML='<p style="color:var(--muted);font-size:12px;letter-spacing:1px">No activities logged yet.</p>';return;}
+  el.innerHTML=log.map(e=>{
+    const memberStr = e.members&&e.members.length ? `With: ${e.members.join(', ')} · ` : '';
+    return logEntryHTML(e,'family',e.activity,memberStr+e.cat+(e.notes?' — '+e.notes:''));
+  }).join('');
 }
 
-function renderFamilyLog() {
-  const log = get('family.log', []).slice().reverse().slice(0, 15);
-  const el = document.getElementById('family-log-list');
-  
-  if(!log.length) { el.innerHTML = '<p style="color:var(--muted);font-size:13px">No activities logged yet.</p>'; return; }
-  el.innerHTML = log.map(e => `<div class="log-entry"><div><div style="font-weight:500">${e.activity}</div><div class="log-desc">${e.cat}${e.notes ? ' — ' + e.notes : ''}</div></div><div class="log-date">${new Date(e.date).toLocaleDateString()}</div></div>`).join('');
-}
-
-function generateFamilyReport() {
-  const log = get('family.log', []);
-  const goals = get('family.goals', 'None set');
-  const el = document.getElementById('family-report');
-  
-  const stats = analyzeData(log);
-  const catCount = {};
-  
-  log.forEach(e => {
-    catCount[e.cat] = (catCount[e.cat] || 0) + 1;
-  });
-
-  const topCat = Object.keys(catCount).sort((a,b) => catCount[b] - catCount[a])[0];
-
-  let html = '<div class="stats-grid">';
-  html += `<div class="stat-box"><div class="stat-value">${stats.count}</div><div class="stat-label">Total Activities</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${stats.thisMonth}</div><div class="stat-label">This Month</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${stats.thisWeek}</div><div class="stat-label">This Week</div></div>`;
-  html += '</div>';
-
-  html += '<div class="report-section">';
-  html += '<div class="report-stat"><div class="report-label">Monthly Goal</div><div class="report-value">' + (goals || 'Not set') + '</div></div>';
-  html += '<div class="report-stat"><div class="report-label">Primary Focus</div><div class="report-value">' + (topCat || 'N/A') + '</div></div>';
-  html += '</div>';
-
-  html += '<div class="report-insight">';
-  if(stats.thisMonth > 0) {
-    html += `💛 You've prioritized family ${stats.thisMonth} time${stats.thisMonth !== 1 ? 's' : ''} this month. Keep building these meaningful connections.`;
-  } else {
-    html += '💡 Log family activities to strengthen bonds and track your commitment to loved ones.';
-  }
-  html += '</div>';
-
-  el.innerHTML = html;
-}
-
-function generateFamilyMonthComparison() {
-  const log = get('family.log', []);
-  const monthKey = document.getElementById('family-compare-month').value;
-  const monthData = getMonthData(log, monthKey);
-  const el = document.getElementById('family-month-comparison');
-  
-  const catCount = {};
-  monthData.forEach(e => {
-    catCount[e.cat] = (catCount[e.cat] || 0) + 1;
-  });
-
-  const topCat = Object.keys(catCount).sort((a,b) => catCount[b] - catCount[a])[0];
-
-  let html = '<div class="stats-grid">';
-  html += `<div class="stat-box"><div class="stat-value">${monthData.length}</div><div class="stat-label">Activities</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${topCat || 'N/A'}</div><div class="stat-label">Top Type</div></div>`;
-  html += '</div>';
-
-  html += '<div class="report-insight">';
-  if(monthData.length > 0) {
-    html += `💛 You logged ${monthData.length} family connection${monthData.length !== 1 ? 's' : ''} in this month. Focus: ${topCat || 'N/A'}.`;
-  } else {
-    html += '📭 No family activities logged for this month.';
-  }
-  html += '</div>';
-
-  el.innerHTML = html;
-}
-
-// ============================================================
 // FINANCE
-// ============================================================
-function saveFinanceGoals() { set('finance.goals', document.getElementById('finance-goals').value); toast('💰 Goals saved!'); }
-function logFinance() {
-  const desc = document.getElementById('fin-desc').value.trim();
-  const amount = parseFloat(document.getElementById('fin-amount').value) || 0;
-  const type = document.getElementById('fin-type').value;
-  const cat = document.getElementById('fin-cat').value;
-  const monthKey = document.getElementById('finance-month').value;
-  const selectedDate = getDateFromMonth(monthKey);
-  
-  if(!desc || amount === 0) { toast('Enter description and amount'); return; }
-  push('finance.log', {desc, amount, type, cat, date: selectedDate.toISOString(), monthKey});
-  
-  document.getElementById('fin-desc').value = '';
-  document.getElementById('fin-amount').value = '';
-  
-  renderFinanceLog();
-  toast('💰 Transaction logged for ' + selectedDate.toLocaleDateString('en-US', {month: 'long', year: 'numeric'}));
+function logFinance(){
+  const desc=document.getElementById('fin-desc').value.trim();
+  const amount=parseFloat(document.getElementById('fin-amount').value)||0;
+  const type=document.getElementById('fin-type').value;
+  const cat=document.getElementById('fin-cat').value;
+  if(!desc){toast('Enter a description');return;}
+  push('finance.log',{id:Date.now(),desc,amount,type,cat,date:getLogDate('finance')});
+  document.getElementById('fin-desc').value='';
+  document.getElementById('fin-amount').value='';
+  renderFinanceLog(); toast('💰 Transaction logged');
+}
+function renderFinanceLog(){
+  const log=get('finance.log',[]).slice().reverse().slice(0,20);
+  const el=document.getElementById('finance-log-list');
+  if(!el) return;
+  if(!log.length){el.innerHTML='<p style="color:var(--muted);font-size:12px;letter-spacing:1px">No transactions logged yet.</p>';return;}
+  el.innerHTML=log.map(e=>logEntryHTML(e,'finance',e.desc,`${e.type} · ${e.cat} · ${e.amount.toLocaleString()} FCFA`)).join('');
 }
 
-function renderFinanceLog() {
-  const log = get('finance.log', []).slice().reverse().slice(0, 15);
-  const el = document.getElementById('finance-log-list');
-  
-  if(!log.length) { el.innerHTML = '<p style="color:var(--muted);font-size:13px">No transactions logged yet.</p>'; return; }
-  el.innerHTML = log.map(e => `<div class="log-entry"><div><div style="font-weight:500">${e.desc}</div><div class="log-desc">${e.type} • ${e.cat}</div></div><div class="log-date">${new Date(e.date).toLocaleDateString()}</div></div>`).join('');
-}
-
-function generateFinanceReport() {
-  const log = get('finance.log', []);
-  const goals = get('finance.goals', 'None set');
-  const el = document.getElementById('finance-report');
-  
-  const stats = analyzeData(log);
-  let totalIncome = 0, totalExpense = 0, totalSaving = 0;
-  
-  log.forEach(e => {
-    if(e.type === 'Income') totalIncome += e.amount;
-    else if(e.type === 'Expense') totalExpense += e.amount;
-    else if(e.type === 'Saving') totalSaving += e.amount;
-  });
-
-  const balance = totalIncome - totalExpense;
-  const savingsRate = totalIncome > 0 ? ((totalSaving / totalIncome) * 100).toFixed(1) : 0;
-
-  let html = '<div class="stats-grid">';
-  html += `<div class="stat-box"><div class="stat-value">${totalIncome.toFixed(0)}</div><div class="stat-label">Total Income</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${totalExpense.toFixed(0)}</div><div class="stat-label">Total Expense</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${totalSaving.toFixed(0)}</div><div class="stat-label">Total Saved</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${balance.toFixed(0)}</div><div class="stat-label">Net Balance</div></div>`;
-  html += '</div>';
-
-  html += '<div class="report-section">';
-  html += '<div class="report-stat"><div class="report-label">Monthly Goal</div><div class="report-value">' + (goals || 'Not set') + '</div></div>';
-  html += '<div class="report-stat"><div class="report-label">Savings Rate</div><div class="report-value">' + savingsRate + '%</div></div>';
-  html += '</div>';
-
-  html += '<div class="report-insight">';
-  if(stats.count > 0) {
-    html += `📊 You've tracked ${stats.count} transaction${stats.count !== 1 ? 's' : ''}. Income: ${totalIncome.toFixed(0)} | Expenses: ${totalExpense.toFixed(0)} | Net: ${balance.toFixed(0)}`;
-  } else {
-    html += '💡 Start logging transactions to monitor your financial health.';
-  }
-  html += '</div>';
-
-  el.innerHTML = html;
-}
-
-function generateFinanceMonthComparison() {
-  const log = get('finance.log', []);
-  const monthKey = document.getElementById('finance-compare-month').value;
-  const monthData = getMonthData(log, monthKey);
-  const el = document.getElementById('finance-month-comparison');
-  
-  let monthIncome = 0, monthExpense = 0, monthSaving = 0;
-  monthData.forEach(e => {
-    if(e.type === 'Income') monthIncome += e.amount;
-    else if(e.type === 'Expense') monthExpense += e.amount;
-    else if(e.type === 'Saving') monthSaving += e.amount;
-  });
-
-  const monthBalance = monthIncome - monthExpense;
-  const monthRate = monthIncome > 0 ? ((monthSaving / monthIncome) * 100).toFixed(1) : 0;
-
-  let html = '<div class="stats-grid">';
-  html += `<div class="stat-box"><div class="stat-value">${monthIncome.toFixed(0)}</div><div class="stat-label">Income</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${monthExpense.toFixed(0)}</div><div class="stat-label">Expense</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${monthBalance.toFixed(0)}</div><div class="stat-label">Balance</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${monthRate}%</div><div class="stat-label">Save Rate</div></div>`;
-  html += '</div>';
-
-  html += '<div class="report-insight">';
-  if(monthData.length > 0) {
-    html += `💰 In this month: Income ${monthIncome.toFixed(0)} | Expenses ${monthExpense.toFixed(0)} | Net ${monthBalance.toFixed(0)} | Savings Rate ${monthRate}%`;
-  } else {
-    html += '📭 No financial transactions logged for this month.';
-  }
-  html += '</div>';
-
-  el.innerHTML = html;
-}
-
-// ============================================================
 // PHYSICAL
-// ============================================================
-function savePhysicalGoals() { set('physical.goals', document.getElementById('physical-goals').value); toast('💪 Goals saved!'); }
-function logPhysical() {
-  const type = document.getElementById('phys-type').value;
-  const amount = document.getElementById('phys-amount').value.trim();
-  const notes = document.getElementById('phys-notes').value.trim();
-  const monthKey = document.getElementById('physical-month').value;
-  const selectedDate = getDateFromMonth(monthKey);
-  
-  if(!type || !amount) { toast('Enter activity type and amount'); return; }
-  push('physical.log', {type, amount, notes, date: selectedDate.toISOString(), monthKey});
-  
-  document.getElementById('phys-amount').value = '';
-  document.getElementById('phys-notes').value = '';
-  
-  renderPhysicalLog();
-  toast('💪 Activity logged for ' + selectedDate.toLocaleDateString('en-US', {month: 'long', year: 'numeric'}));
+function logPhysical(){
+  const type=document.getElementById('phys-type').value;
+  const amount=document.getElementById('phys-amount').value.trim();
+  const notes=document.getElementById('phys-notes').value.trim();
+  push('physical.log',{id:Date.now(),type,amount,notes,date:getLogDate('physical')});
+  document.getElementById('phys-amount').value='';
+  document.getElementById('phys-notes').value='';
+  renderPhysicalLog(); toast('💪 Physical activity logged');
+}
+function renderPhysicalLog(){
+  const log=get('physical.log',[]).slice().reverse().slice(0,20);
+  const el=document.getElementById('physical-log-list');
+  if(!el) return;
+  if(!log.length){el.innerHTML='<p style="color:var(--muted);font-size:12px;letter-spacing:1px">No activities logged yet.</p>';return;}
+  el.innerHTML=log.map(e=>logEntryHTML(e,'physical',e.type,`${e.amount||''}${e.notes?' — '+e.notes:''}`)).join('');
 }
 
-function renderPhysicalLog() {
-  const log = get('physical.log', []).slice().reverse().slice(0, 15);
-  const el = document.getElementById('physical-log-list');
-  
-  if(!log.length) { el.innerHTML = '<p style="color:var(--muted);font-size:13px">No activities logged yet.</p>'; return; }
-  el.innerHTML = log.map(e => `<div class="log-entry"><div><div style="font-weight:505">${e.type}</div><div class="log-desc">${e.amount}${e.notes ? ' — ' + e.notes : ''}</div></div><div class="log-date">${new Date(e.date).toLocaleDateString()}</div></div>`).join('');
-}
-
-function generatePhysicalReport() {
-  const log = get('physical.log', []);
-  const goals = get('physical.goals', 'None set');
-  const el = document.getElementById('physical-report');
-  
-  const stats = analyzeData(log);
-  const typeCount = {};
-  
-  log.forEach(e => {
-    typeCount[e.type] = (typeCount[e.type] || 0) + 1;
-  });
-
-  const topType = Object.keys(typeCount).sort((a,b) => typeCount[b] - typeCount[a])[0];
-
-  let html = '<div class="stats-grid">';
-  html += `<div class="stat-box"><div class="stat-value">${stats.count}</div><div class="stat-label">Total Logged</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${stats.thisMonth}</div><div class="stat-label">This Month</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${stats.thisWeek}</div><div class="stat-label">This Week</div></div>`;
-  html += '</div>';
-
-  html += '<div class="report-section">';
-  html += '<div class="report-stat"><div class="report-label">Monthly Goal</div><div class="report-value">' + (goals || 'Not set') + '</div></div>';
-  html += '<div class="report-stat"><div class="report-label">Primary Activity</div><div class="report-value">' + (topType || 'N/A') + '</div></div>';
-  html += '</div>';
-
-  html += '<div class="report-insight">';
-  if(stats.thisMonth > 0) {
-    html += `🏃 Great work! You've logged ${stats.thisMonth} health activity${stats.thisMonth !== 1 ? 's' : ''} this month. Keep the momentum!`;
-  } else {
-    html += '💡 Log physical activities to track your fitness and wellness journey.';
-  }
-  html += '</div>';
-
-  el.innerHTML = html;
-}
-
-function generatePhysicalMonthComparison() {
-  const log = get('physical.log', []);
-  const monthKey = document.getElementById('physical-compare-month').value;
-  const monthData = getMonthData(log, monthKey);
-  const el = document.getElementById('physical-month-comparison');
-  
-  const typeCount = {};
-  monthData.forEach(e => {
-    typeCount[e.type] = (typeCount[e.type] || 0) + 1;
-  });
-
-  const topType = Object.keys(typeCount).sort((a,b) => typeCount[b] - typeCount[a])[0];
-
-  let html = '<div class="stats-grid">';
-  html += `<div class="stat-box"><div class="stat-value">${monthData.length}</div><div class="stat-label">Activities</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${topType || 'N/A'}</div><div class="stat-label">Top Activity</div></div>`;
-  html += '</div>';
-
-  html += '<div class="report-insight">';
-  if(monthData.length > 0) {
-    html += `💪 In this month, you logged ${monthData.length} health activity${monthData.length !== 1 ? 's' : ''}. Primary: ${topType || 'N/A'}. Great dedication!`;
-  } else {
-    html += '📭 No physical activities logged for this month.';
-  }
-  html += '</div>';
-
-  el.innerHTML = html;
-}
-
-// ============================================================
 // EDUCATION
-// ============================================================
-function saveEduGoals() { set('edu.goals', document.getElementById('edu-goals').value); toast('📚 Goals saved!'); }
-function logEdu() {
-  const topic = document.getElementById('edu-topic').value.trim();
-  const time = parseInt(document.getElementById('edu-time').value) || 0;
-  const type = document.getElementById('edu-type').value;
-  const notes = document.getElementById('edu-notes').value.trim();
-  const monthKey = document.getElementById('edu-month').value;
-  const selectedDate = getDateFromMonth(monthKey);
-  
-  if(!topic) { toast('Enter what you learned'); return; }
-  push('edu.log', {topic, time, type, notes, date: selectedDate.toISOString(), monthKey});
-  
-  document.getElementById('edu-topic').value = '';
-  document.getElementById('edu-time').value = '';
-  document.getElementById('edu-notes').value = '';
-  
-  renderEduLog();
-  toast('📚 Learning logged for ' + selectedDate.toLocaleDateString('en-US', {month: 'long', year: 'numeric'}));
+function logEdu(){
+  const topic=document.getElementById('edu-topic').value.trim();
+  const time=parseInt(document.getElementById('edu-time').value)||0;
+  const type=document.getElementById('edu-type').value;
+  const notes=document.getElementById('edu-notes').value.trim();
+  if(!topic){toast('Enter a topic');return;}
+  push('edu.log',{id:Date.now(),topic,time,type,notes,date:getLogDate('edu')});
+  document.getElementById('edu-topic').value='';
+  document.getElementById('edu-time').value='';
+  document.getElementById('edu-notes').value='';
+  renderEduLog(); toast('📚 Learning logged');
+}
+function renderEduLog(){
+  const log=get('edu.log',[]).slice().reverse().slice(0,20);
+  const el=document.getElementById('edu-log-list');
+  if(!el) return;
+  if(!log.length){el.innerHTML='<p style="color:var(--muted);font-size:12px;letter-spacing:1px">No learning logged yet.</p>';return;}
+  el.innerHTML=log.map(e=>logEntryHTML(e,'edu',e.topic,`${e.type} · ${e.time||0} min${e.notes?' — '+e.notes:''}`)).join('');
 }
 
-function renderEduLog() {
-  const log = get('edu.log', []).slice().reverse().slice(0, 15);
-  const el = document.getElementById('edu-log-list');
-  
-  if(!log.length) { el.innerHTML = '<p style="color:var(--muted);font-size:13px">No activities logged yet.</p>'; return; }
-  el.innerHTML = log.map(e => `<div class="log-entry"><div><div style="font-weight:500">${e.topic}</div><div class="log-desc">${e.type} • ${e.time || 0}min${e.notes ? ' — ' + e.notes : ''}</div></div><div class="log-date">${new Date(e.date).toLocaleDateString()}</div></div>`).join('');
-}
-
-function generateEduReport() {
-  const log = get('edu.log', []);
-  const goals = get('edu.goals', 'None set');
-  const el = document.getElementById('edu-report');
-  
-  const stats = analyzeData(log);
-  let totalTime = 0;
-  const typeCount = {};
-  const topics = new Set();
-  
-  log.forEach(e => {
-    totalTime += e.time || 0;
-    typeCount[e.type] = (typeCount[e.type] || 0) + 1;
-    topics.add(e.topic);
-  });
-
-  const topType = Object.keys(typeCount).sort((a,b) => typeCount[b] - typeCount[a])[0];
-  const avgSession = stats.count > 0 ? (totalTime / stats.count).toFixed(1) : 0;
-
-  let html = '<div class="stats-grid">';
-  html += `<div class="stat-box"><div class="stat-value">${stats.count}</div><div class="stat-label">Total Sessions</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${totalTime}</div><div class="stat-label">Total Hours</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${topics.size}</div><div class="stat-label">Unique Topics</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${avgSession}</div><div class="stat-label">Avg Session (min)</div></div>`;
-  html += '</div>';
-
-  html += '<div class="report-section">';
-  html += '<div class="report-stat"><div class="report-label">Monthly Goal</div><div class="report-value">' + (goals || 'Not set') + '</div></div>';
-  html += '<div class="report-stat"><div class="report-label">Preferred Method</div><div class="report-value">' + (topType || 'N/A') + '</div></div>';
-  html += '</div>';
-
-  html += '<div class="report-insight">';
-  if(stats.count > 0) {
-    html += `🎓 You're a learner! ${stats.count} session${stats.count !== 1 ? 's' : ''} across ${topics.size} topic${topics.size !== 1 ? 's' : ''}, totaling ${totalTime} minutes. Keep expanding your knowledge!`;
-  } else {
-    html += '💡 Start logging your learning journey to track your growth.';
-  }
-  html += '</div>';
-
-  el.innerHTML = html;
-}
-
-function generateEduMonthComparison() {
-  const log = get('edu.log', []);
-  const monthKey = document.getElementById('edu-compare-month').value;
-  const monthData = getMonthData(log, monthKey);
-  const el = document.getElementById('edu-month-comparison');
-  
-  let totalTime = 0;
-  const typeCount = {};
-  const topics = new Set();
-  
-  monthData.forEach(e => {
-    totalTime += e.time || 0;
-    typeCount[e.type] = (typeCount[e.type] || 0) + 1;
-    topics.add(e.topic);
-  });
-
-  const topType = Object.keys(typeCount).sort((a,b) => typeCount[b] - typeCount[a])[0];
-  const avgSession = monthData.length > 0 ? (totalTime / monthData.length).toFixed(1) : 0;
-
-  let html = '<div class="stats-grid">';
-  html += `<div class="stat-box"><div class="stat-value">${monthData.length}</div><div class="stat-label">Sessions</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${totalTime}</div><div class="stat-label">Minutes</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${topics.size}</div><div class="stat-label">Topics</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${avgSession}</div><div class="stat-label">Avg/Session</div></div>`;
-  html += '</div>';
-
-  html += '<div class="report-insight">';
-  if(monthData.length > 0) {
-    html += `📚 Learning this month: ${monthData.length} session${monthData.length !== 1 ? 's' : ''} | ${topics.size} topic${topics.size !== 1 ? 's' : ''} | ${totalTime} minutes invested. Keep learning!`;
-  } else {
-    html += '📭 No learning logged for this month.';
-  }
-  html += '</div>';
-
-  el.innerHTML = html;
-}
-
-// ============================================================
 // PROFESSIONAL
-// ============================================================
-function saveProGoals() { set('pro.goals', document.getElementById('pro-goals').value); toast('🚀 Goals saved!'); }
-function logPro() {
-  const activity = document.getElementById('pro-activity').value.trim();
-  const cat = document.getElementById('pro-cat').value;
-  const notes = document.getElementById('pro-notes').value.trim();
-  const monthKey = document.getElementById('pro-month').value;
-  const selectedDate = getDateFromMonth(monthKey);
-  
-  if(!activity) { toast('Enter an activity'); return; }
-  push('pro.log', {activity, cat, notes, date: selectedDate.toISOString(), monthKey});
-  
-  document.getElementById('pro-activity').value = '';
-  document.getElementById('pro-notes').value = '';
-  
-  renderProLog();
-  toast('🚀 Activity logged for ' + selectedDate.toLocaleDateString('en-US', {month: 'long', year: 'numeric'}));
+function logPro(){
+  const activity=document.getElementById('pro-activity').value.trim();
+  const cat=document.getElementById('pro-cat').value;
+  const notes=document.getElementById('pro-notes').value.trim();
+  if(!activity){toast('Enter an activity');return;}
+  push('pro.log',{id:Date.now(),activity,cat,notes,date:getLogDate('pro')});
+  document.getElementById('pro-activity').value='';
+  document.getElementById('pro-notes').value='';
+  renderProLog(); toast('🚀 Achievement logged');
+}
+function renderProLog(){
+  const log=get('pro.log',[]).slice().reverse().slice(0,20);
+  const el=document.getElementById('pro-log-list');
+  if(!el) return;
+  if(!log.length){el.innerHTML='<p style="color:var(--muted);font-size:12px;letter-spacing:1px">No activities logged yet.</p>';return;}
+  el.innerHTML=log.map(e=>logEntryHTML(e,'pro',e.activity,`${e.cat}${e.notes?' — '+e.notes:''}`)).join('');
 }
 
-function renderProLog() {
-  const log = get('pro.log', []).slice().reverse().slice(0, 15);
-  const el = document.getElementById('pro-log-list');
-  
-  if(!log.length) { el.innerHTML = '<p style="color:var(--muted);font-size:13px">No activities logged yet.</p>'; return; }
-  el.innerHTML = log.map(e => `<div class="log-entry"><div><div style="font-weight:505">${e.activity}</div><div class="log-desc">${e.cat}${e.notes ? ' — ' + e.notes : ''}</div></div><div class="log-date">${new Date(e.date).toLocaleDateString()}</div></div>`).join('');
-}
-
-function generateProReport() {
-  const log = get('pro.log', []);
-  const goals = get('pro.goals', 'None set');
-  const el = document.getElementById('pro-report');
-  
-  const stats = analyzeData(log);
-  const catCount = {};
-  
-  log.forEach(e => {
-    catCount[e.cat] = (catCount[e.cat] || 0) + 1;
-  });
-
-  const topCat = Object.keys(catCount).sort((a,b) => catCount[b] - catCount[a])[0];
-
-  let html = '<div class="stats-grid">';
-  html += `<div class="stat-box"><div class="stat-value">${stats.count}</div><div class="stat-label">Total Activities</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${stats.thisMonth}</div><div class="stat-label">This Month</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${stats.thisWeek}</div><div class="stat-label">This Week</div></div>`;
-  html += '</div>';
-
-  html += '<div class="report-section">';
-  html += '<div class="report-stat"><div class="report-label">Monthly Goal</div><div class="report-value">' + (goals || 'Not set') + '</div></div>';
-  html += '<div class="report-stat"><div class="report-label">Focus Area</div><div class="report-value">' + (topCat || 'N/A') + '</div></div>';
-  html += '</div>';
-
-  html += '<div class="report-insight">';
-  if(stats.thisMonth > 0) {
-    html += `🎯 Professional momentum: ${stats.thisMonth} activity${stats.thisMonth !== 1 ? 's' : ''} this month. You're building a strong career narrative!`;
-  } else {
-    html += '💡 Log professional activities to showcase your career growth.';
-  }
-  html += '</div>';
-
-  el.innerHTML = html;
-}
-
-function generateProMonthComparison() {
-  const log = get('pro.log', []);
-  const monthKey = document.getElementById('pro-compare-month').value;
-  const monthData = getMonthData(log, monthKey);
-  const el = document.getElementById('pro-month-comparison');
-  
-  const catCount = {};
-  monthData.forEach(e => {
-    catCount[e.cat] = (catCount[e.cat] || 0) + 1;
-  });
-
-  const topCat = Object.keys(catCount).sort((a,b) => catCount[b] - catCount[a])[0];
-
-  let html = '<div class="stats-grid">';
-  html += `<div class="stat-box"><div class="stat-value">${monthData.length}</div><div class="stat-label">Activities</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${topCat || 'N/A'}</div><div class="stat-label">Top Focus</div></div>`;
-  html += '</div>';
-
-  html += '<div class="report-insight">';
-  if(monthData.length > 0) {
-    html += `🚀 Career progress: ${monthData.length} achievement${monthData.length !== 1 ? 's' : ''} | Focus: ${topCat || 'N/A'}. You're advancing your professional goals!`;
-  } else {
-    html += '📭 No professional activities logged for this month.';
-  }
-  html += '</div>';
-
-  el.innerHTML = html;
-}
-
-// ============================================================
 // SOCIAL
+function logSocial(){
+  const activity=document.getElementById('soc-activity').value.trim();
+  const cat=document.getElementById('soc-cat').value;
+  const notes=document.getElementById('soc-notes').value.trim();
+  if(!activity){toast('Enter an activity');return;}
+  push('social.log',{id:Date.now(),activity,cat,notes,date:getLogDate('social')});
+  document.getElementById('soc-activity').value='';
+  document.getElementById('soc-notes').value='';
+  renderSocLog(); toast('🌍 Activity logged');
+}
+function renderSocLog(){
+  const log=get('social.log',[]).slice().reverse().slice(0,20);
+  const el=document.getElementById('soc-log-list');
+  if(!el) return;
+  if(!log.length){el.innerHTML='<p style="color:var(--muted);font-size:12px;letter-spacing:1px">No activities logged yet.</p>';return;}
+  el.innerHTML=log.map(e=>logEntryHTML(e,'social',e.activity,`${e.cat}${e.notes?' — '+e.notes:''}`)).join('');
+}
+
 // ============================================================
-function saveSocialGoals() { set('social.goals', document.getElementById('social-goals').value); toast('🌍 Goals saved!'); }
-function logSocial() {
-  const activity = document.getElementById('soc-activity').value.trim();
-  const cat = document.getElementById('soc-cat').value;
-  const notes = document.getElementById('soc-notes').value.trim();
-  const monthKey = document.getElementById('social-month').value;
-  const selectedDate = getDateFromMonth(monthKey);
-  
-  if(!activity) { toast('Enter an activity'); return; }
-  push('social.log', {activity, cat, notes, date: selectedDate.toISOString(), monthKey});
-  
-  document.getElementById('soc-activity').value = '';
-  document.getElementById('soc-notes').value = '';
-  
-  renderSocLog();
-  toast('🌍 Activity logged for ' + selectedDate.toLocaleDateString('en-US', {month: 'long', year: 'numeric'}));
+// REPORTS (Per Pillar)
+// ============================================================
+function analyzeData(logArray, from, to){
+  const f = from ? new Date(from) : null;
+  const t = to ? new Date(to) : null;
+  const filtered = logArray.filter(e => {
+    const d = new Date(e.date);
+    if(f && d < f) return false;
+    if(t && d > t) return false;
+    return true;
+  });
+  const today = new Date();
+  const thisMonth = logArray.filter(e => {
+    const d=new Date(e.date);
+    return d.getMonth()===today.getMonth()&&d.getFullYear()===today.getFullYear();
+  });
+  const thisWeek = logArray.filter(e => (today-new Date(e.date))/(86400000)<=7);
+  return {count:logArray.length, filtered:filtered.length, thisMonth:thisMonth.length, thisWeek:thisWeek.length};
 }
 
-function renderSocLog() {
-  const log = get('social.log', []).slice().reverse().slice(0, 15);
-  const el = document.getElementById('soc-log-list');
-  
-  if(!log.length) { el.innerHTML = '<p style="color:var(--muted);font-size:13px">No activities logged yet.</p>'; return; }
-  el.innerHTML = log.map(e => `<div class="log-entry"><div><div style="font-weight:505">${e.activity}</div><div class="log-desc">${e.cat}${e.notes ? ' — ' + e.notes : ''}</div></div><div class="log-date">${new Date(e.date).toLocaleDateString()}</div></div>`).join('');
+function reportHTML(stats, insight, extra=''){
+  return `
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-value">${stats.count}</div><div class="stat-label">All Time</div></div>
+      <div class="stat-box"><div class="stat-value">${stats.thisMonth}</div><div class="stat-label">This Month</div></div>
+      <div class="stat-box"><div class="stat-value">${stats.thisWeek}</div><div class="stat-label">This Week</div></div>
+    </div>
+    ${extra}
+    <div class="report-insight">${insight}</div>
+  `;
 }
 
-function generateSocialReport() {
-  const log = get('social.log', []);
-  const goals = get('social.goals', 'None set');
-  const el = document.getElementById('social-report');
-  
-  const stats = analyzeData(log);
-  const catCount = {};
-  
-  log.forEach(e => {
-    catCount[e.cat] = (catCount[e.cat] || 0) + 1;
+function generateSpiritReport(){
+  const log=get('spirit.log',[]);
+  const goals=get('spirit.goals',[]);
+  const s=analyzeData(log);
+  const totalMin=log.reduce((a,e)=>a+(e.time||0),0);
+  const done=goals.filter(g=>g.done).length;
+  const insight=s.thisMonth>0
+    ? `✨ You've completed ${s.thisMonth} spiritual practice${s.thisMonth!==1?'s':''} this month, investing ${totalMin} total minutes. ${done}/${goals.length} goals achieved.`
+    : '💡 Start logging your spiritual practices to track your growth journey with God.';
+  document.getElementById('spirit-report').innerHTML=reportHTML(s,insight,
+    `<div class="report-section"><div class="report-stat"><div class="report-label">Total Minutes</div><div class="report-value">${totalMin}</div></div><div class="report-stat"><div class="report-label">Goals Completed</div><div class="report-value">${done}/${goals.length}</div></div></div>`
+  );
+}
+
+function generateFamilyReport(){
+  const log=get('family.log',[]);
+  const goals=get('family.goals',[]);
+  const s=analyzeData(log);
+  const done=goals.filter(g=>g.done).length;
+  const members=new Set();
+  log.forEach(e=>{if(e.members)e.members.forEach(m=>members.add(m));});
+  const insight=s.thisMonth>0
+    ? `❤️ You engaged with your family ${s.thisMonth} time${s.thisMonth!==1?'s':''} this month. Members involved: ${[...members].join(', ')||'various'}. ${done}/${goals.length} goals achieved.`
+    : '💡 Begin logging family activities to strengthen your most important relationships.';
+  document.getElementById('family-report').innerHTML=reportHTML(s,insight,
+    `<div class="report-section"><div class="report-stat"><div class="report-label">Family Members</div><div class="report-value">${members.size}</div></div><div class="report-stat"><div class="report-label">Goals Completed</div><div class="report-value">${done}/${goals.length}</div></div></div>`
+  );
+}
+
+function generateFinanceReport(){
+  const log=get('finance.log',[]);
+  const goals=get('finance.goals',[]);
+  const s=analyzeData(log);
+  const income=log.filter(e=>e.type==='Income').reduce((a,e)=>a+e.amount,0);
+  const expense=log.filter(e=>e.type==='Expense').reduce((a,e)=>a+e.amount,0);
+  const savings=log.filter(e=>e.type==='Savings').reduce((a,e)=>a+e.amount,0);
+  const done=goals.filter(g=>g.done).length;
+  const insight=s.thisMonth>0
+    ? `💰 This month: ${s.thisMonth} transactions. Net: ${(income-expense).toLocaleString()} FCFA. Savings: ${savings.toLocaleString()} FCFA.`
+    : '💡 Log transactions daily to build a clear picture of your financial health.';
+  document.getElementById('finance-report').innerHTML=reportHTML(s,insight,
+    `<div class="stats-grid" style="margin-bottom:12px">
+      <div class="stat-box"><div class="stat-value" style="font-size:18px">${income.toLocaleString()}</div><div class="stat-label">Income (FCFA)</div></div>
+      <div class="stat-box"><div class="stat-value" style="font-size:18px;color:#f87171">${expense.toLocaleString()}</div><div class="stat-label">Expenses</div></div>
+      <div class="stat-box"><div class="stat-value" style="font-size:18px;color:#34d399">${savings.toLocaleString()}</div><div class="stat-label">Savings</div></div>
+    </div>`
+  );
+}
+
+function generatePhysicalReport(){
+  const log=get('physical.log',[]);
+  const goals=get('physical.goals',[]);
+  const s=analyzeData(log);
+  const done=goals.filter(g=>g.done).length;
+  const insight=s.thisMonth>0
+    ? `💪 ${s.thisMonth} physical activities logged this month. ${done}/${goals.length} goals achieved. Keep moving!`
+    : '💡 Start logging workouts, meals, and sleep to track your physical wellbeing.';
+  document.getElementById('physical-report').innerHTML=reportHTML(s,insight,
+    `<div class="report-section"><div class="report-stat"><div class="report-label">Goals Completed</div><div class="report-value">${done}/${goals.length}</div></div></div>`
+  );
+}
+
+function generateEduReport(){
+  const log=get('edu.log',[]);
+  const goals=get('edu.goals',[]);
+  const s=analyzeData(log);
+  const totalMin=log.reduce((a,e)=>a+(e.time||0),0);
+  const done=goals.filter(g=>g.done).length;
+  const insight=s.thisMonth>0
+    ? `📚 ${s.thisMonth} learning sessions this month · ${totalMin} total minutes invested in your growth. ${done}/${goals.length} goals achieved.`
+    : '💡 Log your learning sessions — books, courses, training — to track your development.';
+  document.getElementById('edu-report').innerHTML=reportHTML(s,insight,
+    `<div class="report-section"><div class="report-stat"><div class="report-label">Total Learning Minutes</div><div class="report-value">${totalMin}</div></div><div class="report-stat"><div class="report-label">Goals Completed</div><div class="report-value">${done}/${goals.length}</div></div></div>`
+  );
+}
+
+function generateProReport(){
+  const log=get('pro.log',[]);
+  const goals=get('pro.goals',[]);
+  const s=analyzeData(log);
+  const done=goals.filter(g=>g.done).length;
+  const insight=s.thisMonth>0
+    ? `🚀 ${s.thisMonth} professional activities logged this month. ${done}/${goals.length} goals achieved. You're building something remarkable!`
+    : '💡 Track achievements, milestones, and professional activities to see your career trajectory.';
+  document.getElementById('pro-report').innerHTML=reportHTML(s,insight,
+    `<div class="report-section"><div class="report-stat"><div class="report-label">Goals Completed</div><div class="report-value">${done}/${goals.length}</div></div></div>`
+  );
+}
+
+function generateSocialReport(){
+  const log=get('social.log',[]);
+  const goals=get('social.goals',[]);
+  const s=analyzeData(log);
+  const done=goals.filter(g=>g.done).length;
+  const insight=s.thisMonth>0
+    ? `🌍 ${s.thisMonth} community contributions this month. ${done}/${goals.length} goals achieved. You're making a real difference!`
+    : '💡 Log community service, mentoring, and social activities to track your positive impact.';
+  document.getElementById('social-report').innerHTML=reportHTML(s,insight,
+    `<div class="report-section"><div class="report-stat"><div class="report-label">Goals Completed</div><div class="report-value">${done}/${goals.length}</div></div></div>`
+  );
+}
+
+// ============================================================
+// FULL REPORT MODAL
+// ============================================================
+function openReportModal(){
+  const today = new Date().toISOString().split('T')[0];
+  const firstOfMonth = today.substring(0,8)+'01';
+  document.getElementById('report-from').value = firstOfMonth;
+  document.getElementById('report-to').value = today;
+  document.getElementById('report-modal').classList.add('active');
+}
+function closeReportModal(){ document.getElementById('report-modal').classList.remove('active'); }
+
+function generateFullReport(){
+  const from = document.getElementById('report-from').value;
+  const to = document.getElementById('report-to').value;
+  const el = document.getElementById('full-report-output');
+
+  let html = `<div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)">
+    <div style="font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:4px">PERIOD</div>
+    <div style="font-family:'DM Mono',monospace;font-size:12px">${from} → ${to}</div>
+  </div>`;
+
+  PILLARS.forEach(p => {
+    const log = get(p+'.log', []);
+    const goals = get(p+'.goals', []);
+    const filtered = log.filter(e => {
+      const d = new Date(e.date);
+      const f = from ? new Date(from) : null;
+      const t = to ? new Date(to+'T23:59:59') : null;
+      if(f && d < f) return false;
+      if(t && d > t) return false;
+      return true;
+    });
+    const done = goals.filter(g => g.done).length;
+    const meta = PILLAR_META[p];
+
+    html += `<div class="report-section">
+      <div style="font-size:11px;letter-spacing:3px;color:${meta.color};margin-bottom:10px;font-weight:600;text-transform:uppercase">${meta.icon} ${meta.label}</div>
+      <div class="report-stat"><div class="report-label">Activities in Period</div><div class="report-value">${filtered.length}</div></div>
+      <div class="report-stat"><div class="report-label">Goals Completed</div><div class="report-value">${done}/${goals.length}</div></div>
+    </div>`;
   });
 
-  const topCat = Object.keys(catCount).sort((a,b) => catCount[b] - catCount[a])[0];
+  const totalGoals = PILLARS.reduce((a,p) => a+get(p+'.goals',[]).length, 0);
+  const totalDone = PILLARS.reduce((a,p) => a+get(p+'.goals',[]).filter(g=>g.done).length, 0);
+  const totalLogs = PILLARS.reduce((a,p) => {
+    return a + get(p+'.log',[]).filter(e => {
+      const d=new Date(e.date); const f=from?new Date(from):null; const t=to?new Date(to+'T23:59:59'):null;
+      if(f&&d<f)return false; if(t&&d>t)return false; return true;
+    }).length;
+  }, 0);
 
-  let html = '<div class="stats-grid">';
-  html += `<div class="stat-box"><div class="stat-value">${stats.count}</div><div class="stat-label">Total Activities</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${stats.thisMonth}</div><div class="stat-label">This Month</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${stats.thisWeek}</div><div class="stat-label">This Week</div></div>`;
-  html += '</div>';
-
-  html += '<div class="report-section">';
-  html += '<div class="report-stat"><div class="report-label">Monthly Goal</div><div class="report-value">' + (goals || 'Not set') + '</div></div>';
-  html += '<div class="report-stat"><div class="report-label">Primary Impact</div><div class="report-value">' + (topCat || 'N/A') + '</div></div>';
-  html += '</div>';
-
-  html += '<div class="report-insight">';
-  if(stats.thisMonth > 0) {
-    html += `💚 Amazing community impact: ${stats.thisMonth} contribution${stats.thisMonth !== 1 ? 's' : ''} this month. You're making a difference!`;
-  } else {
-    html += '💡 Log social and community activities to track your positive impact.';
-  }
-  html += '</div>';
-
-  el.innerHTML = html;
-}
-
-function generateSocialMonthComparison() {
-  const log = get('social.log', []);
-  const monthKey = document.getElementById('social-compare-month').value;
-  const monthData = getMonthData(log, monthKey);
-  const el = document.getElementById('social-month-comparison');
-  
-  const catCount = {};
-  monthData.forEach(e => {
-    catCount[e.cat] = (catCount[e.cat] || 0) + 1;
-  });
-
-  const topCat = Object.keys(catCount).sort((a,b) => catCount[b] - catCount[a])[0];
-
-  let html = '<div class="stats-grid">';
-  html += `<div class="stat-box"><div class="stat-value">${monthData.length}</div><div class="stat-label">Activities</div></div>`;
-  html += `<div class="stat-box"><div class="stat-value">${topCat || 'N/A'}</div><div class="stat-label">Top Impact</div></div>`;
-  html += '</div>';
-
-  html += '<div class="report-insight">';
-  if(monthData.length > 0) {
-    html += `💚 Social impact this month: ${monthData.length} contribution${monthData.length !== 1 ? 's' : ''} | Focus: ${topCat || 'N/A'}. You're making the world better!`;
-  } else {
-    html += '📭 No social activities logged for this month.';
-  }
-  html += '</div>';
+  html = `<div class="stats-grid" style="margin-bottom:16px">
+    <div class="stat-box"><div class="stat-value">${totalLogs}</div><div class="stat-label">Total Entries</div></div>
+    <div class="stat-box"><div class="stat-value">${totalDone}</div><div class="stat-label">Goals Done</div></div>
+    <div class="stat-box"><div class="stat-value">${totalGoals}</div><div class="stat-label">Total Goals</div></div>
+  </div>` + html;
 
   el.innerHTML = html;
 }
@@ -1544,81 +1570,103 @@ function generateSocialMonthComparison() {
 // ============================================================
 // EXPORT
 // ============================================================
-function exportToExcel() {
-  const allData = getAllUserData();
-  const exportAll = document.getElementById('export-all').checked;
-  
-  let csvContent = 'WHOLENESS TRACKER - Data Export\n';
-  csvContent += `User: ${USER_NAME}\n`;
-  csvContent += `Exported: ${new Date().toLocaleString()}\n`;
-  csvContent += `© Team21 Academy | © Innocent Forteh\n\n`;
+function toggleExportModal(){ document.getElementById('export-modal').classList.toggle('active'); }
+function toggleAllExport(cb){
+  ['spirit','family','finance','physical','edu','pro','social'].forEach(p => {
+    document.getElementById('export-'+p).checked = cb.checked;
+  });
+}
 
-  const categories = [
-    { key: 'spirit', name: 'Spiritual Wellbeing', id: 'export-spirit' },
-    { key: 'family', name: 'Family Connections', id: 'export-family' },
-    { key: 'finance', name: 'Financial Health', id: 'export-finance' },
-    { key: 'physical', name: 'Physical Health', id: 'export-physical' },
-    { key: 'edu', name: 'Education & Learning', id: 'export-edu' },
-    { key: 'pro', name: 'Professional Growth', id: 'export-pro' },
-    { key: 'social', name: 'Social Impact', id: 'export-social' }
+function exportData(){
+  let csv = `WHOLENESS TRACKER — DATA EXPORT\nUser: ${USER_NAME}\nExported: ${new Date().toLocaleString()}\n© Innocent Forteh · Team21 Academy · Inno4te Publishing\n\n`;
+  const cats = [
+    {key:'spirit',name:'Spiritual Wellbeing',id:'export-spirit'},
+    {key:'family',name:'Family Connections',id:'export-family'},
+    {key:'finance',name:'Financial Health',id:'export-finance'},
+    {key:'physical',name:'Physical Health',id:'export-physical'},
+    {key:'edu',name:'Education & Learning',id:'export-edu'},
+    {key:'pro',name:'Professional Growth',id:'export-pro'},
+    {key:'social',name:'Social Impact',id:'export-social'},
   ];
+  const exportAll = document.getElementById('export-all').checked;
 
-  categories.forEach(cat => {
-    if(!exportAll && !document.getElementById(cat.id).checked) return;
-
-    const logs = get(`${cat.key}.log`, []);
-    const goals = get(`${cat.key}.goals`, '');
-
-    if(logs.length === 0 && !goals) return;
-
-    csvContent += `\n\n=== ${cat.name.toUpperCase()} ===\n`;
-    csvContent += `Goal: ${goals || 'Not set'}\n\n`;
-    
-    if(logs.length > 0) {
-      csvContent += 'Date,';
-      const firstEntry = logs[0];
-      const keys = Object.keys(firstEntry).filter(k => k !== 'date' && k !== 'monthKey');
-      csvContent += keys.join(',') + '\n';
-
-      logs.forEach(entry => {
-        csvContent += `${new Date(entry.date).toLocaleString()},`;
-        csvContent += keys.map(k => {
-          const val = entry[k];
-          return typeof val === 'string' && val.includes(',') ? `"${val}"` : val;
-        }).join(',') + '\n';
+  cats.forEach(c => {
+    if(!exportAll && !document.getElementById(c.id).checked) return;
+    const logs = get(c.key+'.log', []);
+    const goals = get(c.key+'.goals', []);
+    csv += `\n\n=== ${c.name.toUpperCase()} ===\n`;
+    if(goals.length){
+      csv += `\nGOALS:\nDate,Priority,Status,Goal\n`;
+      goals.forEach(g => {
+        csv += `${g.date},${g.priority||'med'},${g.done?'Done':'Pending'},"${g.text}"\n`;
+      });
+    }
+    if(logs.length){
+      csv += `\nACTIVITY LOG:\nDate,`;
+      const keys = Object.keys(logs[0]).filter(k=>k!=='date'&&k!=='id');
+      csv += keys.join(',')+'\n';
+      logs.forEach(e => {
+        csv += `${new Date(e.date).toLocaleDateString()},`;
+        csv += keys.map(k => {
+          const v = Array.isArray(e[k]) ? e[k].join(';') : (e[k]||'');
+          return String(v).includes(',') ? `"${v}"` : v;
+        }).join(',')+'\n';
       });
     }
   });
 
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
   const link = document.createElement('a');
-  const url = URL.createObjectURL(blob);
-  
-  link.setAttribute('href', url);
-  link.setAttribute('download', `wholeness_${USER_NAME}_${new Date().toISOString().split('T')[0]}.csv`);
-  link.style.visibility = 'hidden';
-  
+  link.href = URL.createObjectURL(blob);
+  link.download = `wholeness_${USER_NAME}_${new Date().toISOString().split('T')[0]}.csv`;
+  link.style.display='none';
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  
-  toast('✅ Data exported to CSV!');
+  toast('✦ Exported successfully');
   toggleExportModal();
+}
+
+// ============================================================
+// BIBLE VERSE TICKER
+// ============================================================
+function startVerseTicker(){
+  const el = document.getElementById('verse-display');
+  function show(){
+    el.style.animation='none';
+    el.offsetHeight; // reflow
+    el.textContent = BIBLE_VERSES[verseIndex % BIBLE_VERSES.length];
+    el.style.animation='verseFade 8s ease-in-out infinite';
+    verseIndex++;
+  }
+  show();
+  setInterval(show, 8000);
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function toast(msg){
+  const el=document.createElement('div');
+  el.className='toast'; el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 2600);
 }
 
 // ============================================================
 // STARTUP
 // ============================================================
 window.addEventListener('DOMContentLoaded', () => {
-  const stored = Object.keys(localStorage).find(k => k.match(/wholeness_(.+)_user\.name/));
-  if(stored) {
+  const stored = Object.keys(localStorage).find(k => k.match(/^whn_(.+)_user\.name$/));
+  if(stored){
     USER_NAME = localStorage.getItem(stored);
     document.getElementById('splash').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     initApp();
   }
+  // Init date fields for splash-visible state
+  const today = new Date().toISOString().split('T')[0];
 });
 </script>
-
 </body>
 </html>
